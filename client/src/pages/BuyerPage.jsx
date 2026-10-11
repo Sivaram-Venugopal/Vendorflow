@@ -9,7 +9,9 @@ import POStatusBadge from '../components/POStatusBadge';
 import EvaluatorForm from '../components/EvaluatorForm';
 import VendorScorecardView from '../components/VendorScorecardView';
 import TierBadge from '../components/TierBadge';
+import BuyerDashboardView from '../components/BuyerDashboardView';
 import { 
+  LayoutDashboard,
   ShoppingBag, 
   Award, 
   FileText, 
@@ -32,8 +34,8 @@ const BuyerPage = () => {
   const { history, selectedVendor } = useSelector((state) => state.evaluation);
   const { orders, loading: poLoading } = useSelector((state) => state.po);
 
-  // Navigation tabs: 'pos' | 'new-po' | 'view-po' | 'evaluations' | 'new-evaluation' | 'view-scorecard'
-  const [activeTab, setActiveTab] = useState('pos');
+  // Navigation tabs: 'dashboard' | 'pos' | 'new-po' | 'view-po' | 'evaluations' | 'new-evaluation' | 'view-scorecard'
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedPO, setSelectedPO] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -112,8 +114,17 @@ const BuyerPage = () => {
 
         <div className="flex items-center space-x-3">
           {/* Main Top Tab Switcher */}
-          {(activeTab === 'pos' || activeTab === 'evaluations') && (
+          {(activeTab === 'dashboard' || activeTab === 'pos' || activeTab === 'evaluations') && (
             <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                  activeTab === 'dashboard' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Dashboard</span>
+              </button>
               <button
                 onClick={() => setActiveTab('pos')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
@@ -175,6 +186,18 @@ const BuyerPage = () => {
           </button>
         </div>
       </div>
+
+      {/* 0. BUYER PROCUREMENT & ANALYTICS DASHBOARD */}
+      {activeTab === 'dashboard' && (
+        <BuyerDashboardView
+          onStartDraftPO={() => setActiveTab('new-po')}
+          onStartEvaluate={(v) => {
+            setEvaluatingVendor(v);
+            setActiveTab('new-evaluation');
+          }}
+          onNavigateTab={(tab) => setActiveTab(tab)}
+        />
+      )}
 
       {/* 1. PURCHASE ORDERS LIST VIEW */}
       {activeTab === 'pos' && (

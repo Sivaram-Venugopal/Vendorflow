@@ -11,7 +11,7 @@ import evaluationRoutes from './routes/evaluationRoutes.js';
 import purchaseOrderRoutes from './routes/purchaseOrderRoutes.js';
 import auditLogRoutes from './routes/auditLogRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
-import devRoutes from './routes/devRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -46,7 +46,7 @@ app.use('/api/evaluations', evaluationRoutes);
 app.use('/api/purchase-orders', purchaseOrderRoutes);
 app.use('/api/audit-logs', auditLogRoutes);
 app.use('/api/notifications', notificationRoutes);
-app.use('/api/dev', devRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Root route
 app.get('/', (req, res) => {

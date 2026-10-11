@@ -9,7 +9,9 @@ import VendorScorecardView from '../components/VendorScorecardView';
 import POStatusBadge from '../components/POStatusBadge';
 import PODetailView from '../components/PODetailView';
 import AdminActivityLog from '../components/AdminActivityLog';
+import AdminDashboardView from '../components/AdminDashboardView';
 import { 
+  LayoutDashboard,
   ShieldCheck, 
   Users, 
   Filter, 
@@ -34,8 +36,8 @@ const AdminPage = () => {
   const { history, selectedVendor } = useSelector((state) => state.evaluation);
   const { orders, loading: poLoading } = useSelector((state) => state.po);
 
-  // 'queue' | 'comparison' | 'scorecard' | 'orders' | 'view-po'
-  const [activeTab, setActiveTab] = useState('queue');
+  // 'dashboard' | 'queue' | 'orders' | 'comparison' | 'activity' | 'scorecard' | 'view-po'
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [statusFilter, setStatusFilter] = useState('All');
   const [poStatusFilter, setPoStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
@@ -137,6 +139,15 @@ const AdminPage = () => {
           ) : (
             <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
               <button
+                onClick={() => setActiveTab('dashboard')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                  activeTab === 'dashboard' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Dashboard</span>
+              </button>
+              <button
                 onClick={() => setActiveTab('queue')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                   activeTab === 'queue' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-white'
@@ -183,6 +194,11 @@ const AdminPage = () => {
           </button>
         </div>
       </div>
+
+      {/* Tab 0: Admin Executive & Operations Dashboard */}
+      {activeTab === 'dashboard' && (
+        <AdminDashboardView onNavigateTab={(tab) => setActiveTab(tab)} />
+      )}
 
       {/* Tab 1: Onboarding Queue */}
       {activeTab === 'queue' && (

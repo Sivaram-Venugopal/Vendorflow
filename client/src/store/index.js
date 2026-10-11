@@ -6,6 +6,7 @@ import evaluationReducer from './slices/evaluationSlice';
 import purchaseOrderReducer from './slices/purchaseOrderSlice';
 import auditLogReducer from './slices/auditLogSlice';
 import notificationReducer from './slices/notificationSlice';
+import dashboardReducer from './slices/dashboardSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     po: purchaseOrderReducer,
     auditLog: auditLogReducer,
     notifications: notificationReducer,
+    dashboard: dashboardReducer,
   },
 });
 

@@ -6,6 +6,7 @@ import { fetchPurchaseOrders, fetchPODetails, updatePOStatus } from '../store/sl
 import VendorStatusBanner from '../components/VendorStatusBanner';
 import VendorOnboardingWizard from '../components/VendorOnboardingWizard';
 import VendorScorecardView from '../components/VendorScorecardView';
+import VendorDashboardView from '../components/VendorDashboardView';
 import TierBadge from '../components/TierBadge';
 import POStatusBadge from '../components/POStatusBadge';
 import PODetailView from '../components/PODetailView';
@@ -29,7 +30,8 @@ import {
   Eye,
   ArrowLeft,
   Calendar,
-  AlertCircle
+  AlertCircle,
+  LayoutDashboard
 } from 'lucide-react';
 
 const VendorPage = () => {
@@ -39,8 +41,8 @@ const VendorPage = () => {
   const { history } = useSelector((state) => state.evaluation);
   const { orders, loading: poLoading } = useSelector((state) => state.po);
 
-  // 'profile' | 'scorecard' | 'orders' | 'view-po'
-  const [activeTab, setActiveTab] = useState('profile');
+  // 'dashboard' | 'profile' | 'scorecard' | 'orders' | 'view-po'
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [inspectingPO, setInspectingPO] = useState(null);
   const [showWizard, setShowWizard] = useState(false);
   const [docType, setDocType] = useState('GST_CERTIFICATE');
@@ -132,46 +134,57 @@ const VendorPage = () => {
         </div>
 
         <div className="flex items-center space-x-3">
-          {currentProfile && (
-            activeTab === 'view-po' ? (
+          {activeTab === 'view-po' ? (
+            <button
+              onClick={() => setActiveTab('orders')}
+              className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center space-x-1.5"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Incoming POs</span>
+            </button>
+          ) : (
+            <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
               <button
-                onClick={() => setActiveTab('orders')}
-                className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center space-x-1.5"
+                onClick={() => setActiveTab('dashboard')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                  activeTab === 'dashboard' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
               >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                <span>Back to Incoming POs</span>
+                <LayoutDashboard className="w-3.5 h-3.5" />
+                <span>Dashboard</span>
               </button>
-            ) : (
-              <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
-                <button
-                  onClick={() => setActiveTab('profile')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
-                    activeTab === 'profile' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <Layers className="w-3.5 h-3.5" />
-                  <span>Company Profile</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab('orders')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
-                    activeTab === 'orders' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>Incoming POs ({orders.length})</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab('scorecard')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
-                    activeTab === 'scorecard' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <Award className="w-3.5 h-3.5" />
-                  <span>Scorecard</span>
-                </button>
-              </div>
-            )
+              {currentProfile && (
+                <>
+                  <button
+                    onClick={() => setActiveTab('profile')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                      activeTab === 'profile' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <Layers className="w-3.5 h-3.5" />
+                    <span>Company Profile</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('orders')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                      activeTab === 'orders' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <ShoppingBag className="w-3.5 h-3.5" />
+                    <span>Incoming POs ({orders.length})</span>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('scorecard')}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                      activeTab === 'scorecard' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <Award className="w-3.5 h-3.5" />
+                    <span>Scorecard</span>
+                  </button>
+                </>
+              )}
+            </div>
           )}
 
           <button
@@ -186,7 +199,15 @@ const VendorPage = () => {
       </div>
 
       {/* Main Vendor Content */}
-      {currentProfile ? (
+      {showWizard ? (
+        // Multi-Step Onboarding Form
+        <VendorOnboardingWizard onComplete={() => { setShowWizard(false); loadProfile(); }} />
+      ) : activeTab === 'dashboard' ? (
+        <VendorDashboardView
+          onNavigateTab={(tab) => setActiveTab(tab)}
+          onStartOnboarding={() => setShowWizard(true)}
+        />
+      ) : currentProfile ? (
         activeTab === 'scorecard' ? (
           // Tab: Vendor's Own Read-Only Scorecard View
           <VendorScorecardView
@@ -465,9 +486,6 @@ const VendorPage = () => {
             </div>
           </div>
         )
-      ) : showWizard ? (
-        // Multi-Step Onboarding Form
-        <VendorOnboardingWizard onComplete={() => { setShowWizard(false); loadProfile(); }} />
       ) : (
         // Not onboarded yet -> Call to Action
         <div className="p-12 bg-slate-800/50 rounded-2xl border border-dashed border-slate-700 text-center max-w-2xl mx-auto space-y-4">
