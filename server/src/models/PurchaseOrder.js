@@ -37,6 +37,43 @@ lineItemSchema.pre('validate', function (next) {
   next();
 });
 
+// Append-only transition history log subdocument
+const transitionHistorySchema = new mongoose.Schema(
+  {
+    fromStatus: {
+      type: String,
+      required: true,
+    },
+    toStatus: {
+      type: String,
+      required: true,
+    },
+    actor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    actorName: {
+      type: String,
+      default: '',
+    },
+    actorRole: {
+      type: String,
+      default: '',
+    },
+    remarks: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { _id: false }
+);
+
 const purchaseOrderSchema = new mongoose.Schema(
   {
     poNumber: {
@@ -95,11 +132,15 @@ const purchaseOrderSchema = new mongoose.Schema(
       type: String,
       enum: [
         'Draft',
-        'Issued',
+        'Pending Approval',
+        'Approved',
+        'Rejected',
+        'Sent',
         'Acknowledged',
-        'In Transit',
+        'Declined',
         'Delivered',
-        'Completed',
+        'Invoiced',
+        'Closed',
         'Cancelled',
       ],
       default: 'Draft',
@@ -120,6 +161,8 @@ const purchaseOrderSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    // Append-only chronological state machine transitions
+    history: [transitionHistorySchema],
   },
   {
     timestamps: true,
@@ -129,7 +172,10 @@ const purchaseOrderSchema = new mongoose.Schema(
 // Calculate totals before saving
 purchaseOrderSchema.pre('save', function (next) {
   if (this.items && this.items.length > 0) {
-    this.subtotal = this.items.reduce((sum, item) => sum + (item.totalAmount || item.quantity * item.unitPrice), 0);
+    this.subtotal = this.items.reduce(
+      (sum, item) => sum + (item.totalAmount || item.quantity * item.unitPrice),
+      0
+    );
     // Standard 18% GST estimate if not specified
     if (this.taxAmount === 0 || this.taxAmount === undefined) {
       this.taxAmount = Math.round(this.subtotal * 0.18 * 100) / 100;
@@ -139,9 +185,10 @@ purchaseOrderSchema.pre('save', function (next) {
   next();
 });
 
-// Compound index for querying vendor purchase orders by status
+// Compound indexes
 purchaseOrderSchema.index({ vendor: 1, status: 1 });
 purchaseOrderSchema.index({ buyer: 1, createdAt: -1 });
+purchaseOrderSchema.index({ status: 1, createdAt: -1 });
 
 const PurchaseOrder = mongoose.model('PurchaseOrder', purchaseOrderSchema);
 export default PurchaseOrder;

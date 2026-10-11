@@ -3,6 +3,7 @@ import healthReducer from './slices/healthSlice';
 import authReducer from './slices/authSlice';
 import vendorReducer from './slices/vendorSlice';
 import evaluationReducer from './slices/evaluationSlice';
+import purchaseOrderReducer from './slices/purchaseOrderSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     auth: authReducer,
     vendor: vendorReducer,
     evaluation: evaluationReducer,
+    po: purchaseOrderReducer,
   },
 });
 
