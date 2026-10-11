@@ -8,6 +8,7 @@ import VendorTierComparisonView from '../components/VendorTierComparisonView';
 import VendorScorecardView from '../components/VendorScorecardView';
 import POStatusBadge from '../components/POStatusBadge';
 import PODetailView from '../components/PODetailView';
+import AdminActivityLog from '../components/AdminActivityLog';
 import { 
   ShieldCheck, 
   Users, 
@@ -160,6 +161,15 @@ const AdminPage = () => {
               >
                 <BarChart2 className="w-3.5 h-3.5" />
                 <span>Tiers</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('activity')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
+                  activeTab === 'activity' ? 'bg-sky-600 text-white' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <FileText className="w-3.5 h-3.5" />
+                <span>Activity Log</span>
               </button>
             </div>
           )}
@@ -399,6 +409,11 @@ const AdminPage = () => {
           vendor={selectedVendor || inspectingVendor}
           evaluations={history}
         />
+      )}
+
+      {/* Tab 4: System Audit Activity Log */}
+      {activeTab === 'activity' && (
+        <AdminActivityLog />
       )}
     </div>
   );

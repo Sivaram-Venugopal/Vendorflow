@@ -82,3 +82,6 @@ export const roleMiddleware = (...roles) => {
     next();
   };
 };
+
+export const protect = authMiddleware;
+export const authorizeRoles = roleMiddleware;

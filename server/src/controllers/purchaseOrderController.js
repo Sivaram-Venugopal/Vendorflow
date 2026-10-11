@@ -1,6 +1,8 @@
 import asyncHandler from '../utils/asyncHandler.js';
-import { PurchaseOrder, Vendor, User, AuditLog } from '../models/index.js';
+import { PurchaseOrder, Vendor, User } from '../models/index.js';
 import { validatePOTransition } from '../utils/poStateMachine.js';
+import { logAudit } from '../utils/auditLogger.js';
+import { sendPOStatusChangeEmail } from '../utils/mailer.js';
 
 /**
  * Generate unique PO Number (e.g. PO-2026-0042)
@@ -92,19 +94,21 @@ export const createPurchaseOrder = asyncHandler(async (req, res) => {
     ],
   });
 
-  // Record audit log
-  await AuditLog.create({
-    user: req.user._id,
+  // Centralized audit log
+  await logAudit(req, {
     action: 'PO_CREATED',
     entityType: 'PurchaseOrder',
     entityId: po._id,
+    afterState: {
+      status: 'Draft',
+      poNumber: po.poNumber,
+      totalAmount: po.totalAmount,
+    },
     details: {
       poNumber: po.poNumber,
       totalAmount: po.totalAmount,
       vendor: vendor.companyName,
     },
-    ipAddress: req.ip || '',
-    userAgent: req.headers['user-agent'] || '',
   });
 
   const populatedPO = await PurchaseOrder.findById(po._id)
@@ -214,7 +218,7 @@ export const transitionPOStatus = asyncHandler(async (req, res) => {
     throw new Error('Target status is required');
   }
 
-  const po = await PurchaseOrder.findById(id).populate('vendor', 'owner companyName');
+  const po = await PurchaseOrder.findById(id).populate('vendor', 'owner companyName contactEmail');
   if (!po) {
     res.status(404);
     throw new Error('Purchase Order not found');
@@ -252,20 +256,37 @@ export const transitionPOStatus = asyncHandler(async (req, res) => {
 
   await po.save();
 
-  // Audit log
-  await AuditLog.create({
-    user: req.user._id,
+  // Dispatch real Nodemailer Ethereal test email
+  const emailResult = await sendPOStatusChangeEmail({
+    po,
+    fromStatus: previousStatus,
+    toStatus: targetStatus,
+    remarks: remarks || '',
+    recipientEmail: po.vendor?.contactEmail,
+    actorName: req.user.name,
+  });
+
+  // Centralized audit log with before/after state & in-app notification
+  await logAudit(req, {
     action: targetStatus === 'Acknowledged' ? 'PO_ACKNOWLEDGED' : 'PO_STATUS_UPDATED',
     entityType: 'PurchaseOrder',
     entityId: po._id,
+    beforeState: { status: previousStatus },
+    afterState: { status: targetStatus, remarks: remarks || '' },
     details: {
       poNumber: po.poNumber,
       fromStatus: previousStatus,
       toStatus: targetStatus,
       remarks: remarks || '',
+      emailPreviewUrl: emailResult?.previewUrl || null,
     },
-    ipAddress: req.ip || '',
-    userAgent: req.headers['user-agent'] || '',
+    notify: {
+      targetRole: req.user.role === 'Vendor' ? 'Buyer' : 'Vendor',
+      title: `PO ${po.poNumber} Status: ${targetStatus}`,
+      message: `Order transitioned from "${previousStatus}" to "${targetStatus}" by ${req.user.name}.`,
+      type: 'PO_STATUS',
+      emailPreviewUrl: emailResult?.previewUrl || null,
+    },
   });
 
   const updatedPO = await PurchaseOrder.findById(po._id)

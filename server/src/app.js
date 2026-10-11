@@ -9,6 +9,8 @@ import authRoutes from './routes/authRoutes.js';
 import vendorRoutes from './routes/vendorRoutes.js';
 import evaluationRoutes from './routes/evaluationRoutes.js';
 import purchaseOrderRoutes from './routes/purchaseOrderRoutes.js';
+import auditLogRoutes from './routes/auditLogRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 import devRoutes from './routes/devRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
@@ -42,6 +44,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/vendors', vendorRoutes);
 app.use('/api/evaluations', evaluationRoutes);
 app.use('/api/purchase-orders', purchaseOrderRoutes);
+app.use('/api/audit-logs', auditLogRoutes);
+app.use('/api/notifications', notificationRoutes);
 app.use('/api/dev', devRoutes);
 
 // Root route

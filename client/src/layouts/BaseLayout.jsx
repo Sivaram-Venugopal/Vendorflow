@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/slices/authSlice';
 import ApiHealthIndicator from '../components/ApiHealthIndicator';
+import NotificationCenter from '../components/NotificationCenter';
 import {
   Building2,
   LayoutDashboard,
@@ -51,6 +52,7 @@ const BaseLayout = () => {
 
         <div className="flex items-center space-x-4">
           <ApiHealthIndicator />
+          <NotificationCenter />
 
           {/* User Auth Status / Action in Header */}
           {isAuthenticated && user ? (

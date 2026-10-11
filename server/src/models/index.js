@@ -3,6 +3,7 @@ import Vendor from './Vendor.js';
 import Evaluation from './Evaluation.js';
 import PurchaseOrder from './PurchaseOrder.js';
 import AuditLog from './AuditLog.js';
+import Notification from './Notification.js';
 
 export {
   User,
@@ -10,6 +11,7 @@ export {
   Evaluation,
   PurchaseOrder,
   AuditLog,
+  Notification,
 };
 
 export default {
@@ -18,4 +20,5 @@ export default {
   Evaluation,
   PurchaseOrder,
   AuditLog,
+  Notification,
 };

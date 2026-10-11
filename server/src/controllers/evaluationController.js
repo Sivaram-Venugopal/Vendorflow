@@ -1,6 +1,8 @@
 import asyncHandler from '../utils/asyncHandler.js';
-import { Evaluation, Vendor, AuditLog } from '../models/index.js';
+import { Evaluation, Vendor } from '../models/index.js';
 import { evaluateVendor } from '../utils/scoring.js';
+import { logAudit } from '../utils/auditLogger.js';
+import { sendEvaluationEmail } from '../utils/mailer.js';
 
 /**
  * @desc    Submit a new vendor evaluation with per-KPI scores & weights
@@ -62,25 +64,51 @@ export const createEvaluation = asyncHandler(async (req, res) => {
     allEvaluations.reduce((sum, item) => sum + item.overallScore, 0) /
     allEvaluations.length;
 
+  const prevOverallRating = vendor.overallRating;
+  const prevRatingTier = vendor.ratingTier;
+
   vendor.overallRating = Math.round(totalAvg * 10) / 10;
   vendor.ratingTier = scoringResult.tier; // Set to latest evaluated tier
   await vendor.save();
 
-  // Record audit log
-  await AuditLog.create({
-    user: req.user._id,
+  // Dispatch real Nodemailer Ethereal test email
+  const emailResult = await sendEvaluationEmail({
+    vendor,
+    evaluation,
+    recipientEmail: vendor.contactEmail,
+    evaluatorName: req.user.name,
+  });
+
+  // Centralized audit log with before/after state & in-app notification
+  await logAudit(req, {
     action: 'EVALUATION_SUBMITTED',
     entityType: 'Evaluation',
     entityId: evaluation._id,
+    beforeState: {
+      overallRating: prevOverallRating,
+      ratingTier: prevRatingTier,
+    },
+    afterState: {
+      overallRating: vendor.overallRating,
+      ratingTier: vendor.ratingTier,
+      latestScore: evaluation.overallScore,
+    },
     details: {
       vendorId: vendor._id,
       vendorName: vendor.companyName,
       period: evaluation.period,
       weightedScore: evaluation.overallScore,
       ratingTier: evaluation.ratingTier,
+      emailPreviewUrl: emailResult?.previewUrl || null,
     },
-    ipAddress: req.ip || '',
-    userAgent: req.headers['user-agent'] || '',
+    notify: {
+      recipient: vendor.owner?._id || vendor.owner,
+      targetRole: 'Vendor',
+      title: 'New Performance Scorecard Issued',
+      message: `${vendor.companyName} evaluated with score ${evaluation.overallScore}/5.0 (${evaluation.ratingTier} tier).`,
+      type: 'EVALUATION',
+      emailPreviewUrl: emailResult?.previewUrl || null,
+    },
   });
 
   const populatedEvaluation = await Evaluation.findById(evaluation._id)

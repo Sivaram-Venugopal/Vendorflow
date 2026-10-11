@@ -11,19 +11,7 @@ const auditLogSchema = new mongoose.Schema(
     action: {
       type: String,
       required: [true, 'Action type is required'],
-      enum: [
-        'USER_LOGIN',
-        'VENDOR_CREATED',
-        'VENDOR_UPDATED',
-        'VENDOR_APPROVED',
-        'VENDOR_REJECTED',
-        'EVALUATION_SUBMITTED',
-        'PO_CREATED',
-        'PO_STATUS_UPDATED',
-        'PO_ACKNOWLEDGED',
-        'PO_DELIVERED',
-        'PO_CANCELLED',
-      ],
+      trim: true,
       index: true,
     },
     entityType: {
@@ -36,6 +24,14 @@ const auditLogSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: [true, 'Entity ID is required'],
       index: true,
+    },
+    beforeState: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
+    },
+    afterState: {
+      type: mongoose.Schema.Types.Mixed,
+      default: null,
     },
     details: {
       type: mongoose.Schema.Types.Mixed,
@@ -51,13 +47,15 @@ const auditLogSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: { createdAt: true, updatedAt: false }, // Audit logs are immutable
+    timestamps: { createdAt: true, updatedAt: false }, // Audit logs are strictly immutable write-once
   }
 );
 
-// Compound index for querying audit events on an entity over time
+// Compound indexes for querying audit events on an entity over time and filtering
 auditLogSchema.index({ entityType: 1, entityId: 1, createdAt: -1 });
 auditLogSchema.index({ user: 1, createdAt: -1 });
+auditLogSchema.index({ createdAt: -1 });
+auditLogSchema.index({ action: 1, createdAt: -1 });
 
 const AuditLog = mongoose.model('AuditLog', auditLogSchema);
 export default AuditLog;
