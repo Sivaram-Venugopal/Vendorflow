@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import healthRoutes from './routes/healthRoutes.js';
+import devRoutes from './routes/devRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 dotenv.config();
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Routes
 app.use('/api', healthRoutes);
+app.use('/api/dev', devRoutes);
 
 // Root route
 app.get('/', (req, res) => {
