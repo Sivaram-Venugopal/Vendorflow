@@ -114,6 +114,13 @@ const vendorSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    // Vendor Rating Tier: Preferred, Approved, On-Watch, Blacklisted
+    ratingTier: {
+      type: String,
+      enum: ['Preferred', 'Approved', 'On-Watch', 'Blacklisted'],
+      default: 'Approved',
+      index: true,
+    },
     complianceScore: {
       type: Number,
       min: 0,
@@ -133,8 +140,9 @@ const vendorSchema = new mongoose.Schema(
   }
 );
 
-// Compound index for querying active category vendors
+// Compound indexes
 vendorSchema.index({ category: 1, status: 1 });
+vendorSchema.index({ ratingTier: 1, overallRating: -1 });
 
 const Vendor = mongoose.model('Vendor', vendorSchema);
 export default Vendor;

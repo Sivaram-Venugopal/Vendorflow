@@ -7,6 +7,7 @@ import path from 'path';
 import healthRoutes from './routes/healthRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import vendorRoutes from './routes/vendorRoutes.js';
+import evaluationRoutes from './routes/evaluationRoutes.js';
 import devRoutes from './routes/devRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
@@ -38,6 +39,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/vendors', vendorRoutes);
+app.use('/api/evaluations', evaluationRoutes);
 app.use('/api/dev', devRoutes);
 
 // Root route

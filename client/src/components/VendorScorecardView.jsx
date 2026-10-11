@@ -1,0 +1,192 @@
+import React from 'react';
+import { 
+  ResponsiveContainer, 
+  LineChart, 
+  Line, 
+  XAxis, 
+  YAxis, 
+  Tooltip, 
+  CartesianGrid,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar
+} from 'recharts';
+import TierBadge from './TierBadge';
+import { 
+  Award, 
+  TrendingUp, 
+  CheckCircle, 
+  Clock, 
+  FileText, 
+  Calendar 
+} from 'lucide-react';
+
+const VendorScorecardView = ({ vendor, evaluations = [] }) => {
+  if (!vendor) return null;
+
+  // Format historical scores for Recharts time-series line chart
+  const timeSeriesData = evaluations.map((item, idx) => ({
+    name: item.period || `Eval ${idx + 1}`,
+    score: item.overallScore,
+    quality: item.qualityScore,
+    delivery: item.deliveryScore,
+    pricing: item.pricingScore,
+    compliance: item.complianceScore,
+    date: new Date(item.createdAt).toLocaleDateString(),
+  }));
+
+  // Latest evaluation for per-KPI radar / breakdown
+  const latestEval = evaluations.length > 0 ? evaluations[evaluations.length - 1] : null;
+
+  const radarData = latestEval
+    ? [
+        { subject: 'Quality', score: latestEval.qualityScore, fullMark: 5 },
+        { subject: 'Delivery', score: latestEval.deliveryScore, fullMark: 5 },
+        { subject: 'Pricing', score: latestEval.pricingScore, fullMark: 5 },
+        { subject: 'Compliance', score: latestEval.complianceScore, fullMark: 5 },
+      ]
+    : [];
+
+  return (
+    <div className="space-y-6">
+      {/* Top Summary Banner */}
+      <div className="p-6 bg-slate-800/80 rounded-2xl border border-slate-700/80 shadow-xl backdrop-blur flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="text-xs uppercase tracking-wider text-slate-400 font-semibold">Vendor Scorecard</div>
+          <h2 className="text-2xl font-bold text-white mt-0.5">{vendor.companyName}</h2>
+          <div className="text-xs text-slate-400 mt-1">
+            Category: <span className="text-slate-200">{vendor.category}</span> • Evaluations Completed: <span className="text-white font-bold">{evaluations.length}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-4">
+          <div className="text-right">
+            <div className="text-[10px] uppercase font-semibold text-slate-400">Current Rating</div>
+            <div className="text-2xl font-black text-white font-mono">
+              {vendor.overallRating ? vendor.overallRating.toFixed(1) : 'N/A'} <span className="text-xs text-slate-400 font-normal">/ 5.0</span>
+            </div>
+          </div>
+          <TierBadge tier={vendor.ratingTier || 'Approved'} />
+        </div>
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Trend Over Time Line Chart */}
+        <div className="lg:col-span-2 bg-slate-800/80 rounded-2xl border border-slate-700/80 p-5 shadow-xl backdrop-blur">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-sm font-bold text-white flex items-center space-x-2">
+              <TrendingUp className="w-4 h-4 text-sky-400" />
+              <span>Score History & Performance Trend</span>
+            </h3>
+            <span className="text-[11px] text-slate-400">Scale: 1.0 to 5.0</span>
+          </div>
+
+          {timeSeriesData.length > 0 ? (
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={timeSeriesData} margin={{ top: 10, right: 20, left: -20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                  <YAxis domain={[1, 5]} stroke="#94a3b8" fontSize={11} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.75rem', fontSize: '12px' }}
+                    itemStyle={{ color: '#38bdf8' }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="score"
+                    stroke="#0284c7"
+                    strokeWidth={3}
+                    dot={{ fill: '#38bdf8', r: 5 }}
+                    activeDot={{ r: 8 }}
+                    name="Weighted Score"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="h-64 flex items-center justify-center text-xs text-slate-500 border border-dashed border-slate-700 rounded-xl">
+              No historical evaluation milestones recorded yet.
+            </div>
+          )}
+        </div>
+
+        {/* Per-KPI Radar / Balance Breakdown */}
+        <div className="bg-slate-800/80 rounded-2xl border border-slate-700/80 p-5 shadow-xl backdrop-blur">
+          <h3 className="text-sm font-bold text-white mb-2">KPI Dimension Balance</h3>
+          {latestEval ? (
+            <div className="h-64 w-full flex items-center justify-center">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={radarData}>
+                  <PolarGrid stroke="#334155" />
+                  <PolarAngleAxis dataKey="subject" stroke="#94a3b8" fontSize={11} />
+                  <PolarRadiusAxis domain={[0, 5]} stroke="#475569" fontSize={9} />
+                  <Radar name="KPI Score" dataKey="score" stroke="#818cf8" fill="#6366f1" fillOpacity={0.4} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '0.5rem', fontSize: '11px' }}
+                  />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <div className="h-64 flex items-center justify-center text-xs text-slate-500 border border-dashed border-slate-700 rounded-xl">
+              Awaiting initial audit.
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Historical Evaluations Table */}
+      <div className="bg-slate-800/80 rounded-2xl border border-slate-700/80 overflow-hidden shadow-xl backdrop-blur">
+        <div className="p-4 border-b border-slate-700/80 flex items-center justify-between">
+          <h3 className="font-bold text-white text-sm">Detailed Evaluation History</h3>
+          <span className="text-xs text-slate-400">{evaluations.length} Audits Logged</span>
+        </div>
+
+        {evaluations.length === 0 ? (
+          <div className="p-8 text-center text-xs text-slate-500">
+            No evaluations completed for this vendor yet.
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-slate-900/60 border-b border-slate-700/60 text-slate-400 uppercase font-semibold">
+                  <th className="py-3 px-4">Period</th>
+                  <th className="py-3 px-4">Weighted Score</th>
+                  <th className="py-3 px-4">Tier Awarded</th>
+                  <th className="py-3 px-4">Quality (35%)</th>
+                  <th className="py-3 px-4">Delivery (25%)</th>
+                  <th className="py-3 px-4">Pricing (20%)</th>
+                  <th className="py-3 px-4">Compliance (20%)</th>
+                  <th className="py-3 px-4">Evaluator</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-700/50 text-slate-200">
+                {evaluations.map((ev) => (
+                  <tr key={ev._id} className="hover:bg-slate-700/30">
+                    <td className="py-3 px-4 font-semibold text-white">{ev.period}</td>
+                    <td className="py-3 px-4 font-mono font-bold text-sky-400">{ev.overallScore.toFixed(2)}</td>
+                    <td className="py-3 px-4">
+                      <TierBadge tier={ev.ratingTier} />
+                    </td>
+                    <td className="py-3 px-4 font-mono">{ev.qualityScore.toFixed(1)}</td>
+                    <td className="py-3 px-4 font-mono">{ev.deliveryScore.toFixed(1)}</td>
+                    <td className="py-3 px-4 font-mono">{ev.pricingScore.toFixed(1)}</td>
+                    <td className="py-3 px-4 font-mono">{ev.complianceScore.toFixed(1)}</td>
+                    <td className="py-3 px-4 text-slate-400">{ev.evaluator?.name || 'Procurement Desk'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default VendorScorecardView;

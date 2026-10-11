@@ -6,6 +6,7 @@ import {
   getMyVendorProfile,
   updateVendorStatus,
 } from '../controllers/vendorController.js';
+import { getVendorEvaluations } from '../controllers/evaluationController.js';
 import {
   authMiddleware,
   roleMiddleware,
@@ -52,6 +53,13 @@ router.patch(
   authMiddleware,
   roleMiddleware('Admin'),
   updateVendorStatus
+);
+
+// 6. Get evaluations for a specific vendor
+router.get(
+  '/:id/evaluations',
+  authMiddleware,
+  getVendorEvaluations
 );
 
 export default router;
