@@ -3,8 +3,10 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
+import path from 'path';
 import healthRoutes from './routes/healthRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import vendorRoutes from './routes/vendorRoutes.js';
 import devRoutes from './routes/devRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
@@ -23,6 +25,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); // Parse Cookie header and populate req.cookies
 
+// Static directory for uploaded KYC compliance documents
+app.use('/uploads', express.static(path.resolve('uploads')));
+
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else {
@@ -32,6 +37,7 @@ if (process.env.NODE_ENV === 'development') {
 // Routes
 app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/vendors', vendorRoutes);
 app.use('/api/dev', devRoutes);
 
 // Root route
