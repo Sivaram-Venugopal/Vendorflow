@@ -6,7 +6,7 @@ Progress tracker across all implementation phases of the VendorFlow procurement 
 |---|---|:---:|---|
 | **Phase 0** | **Project Setup & Environment Bootstrap** | [x] Completed | MERN stack scaffold, server Express + Mongoose boot logging, Vite React + Tailwind + RTK client shell, `/api/health` live connection indicator, docs, and git setup. |
 | **Phase 1** | **Database Schema & Core Backend Foundation** | [x] Completed | Mongoose models (User, Vendor, Evaluation, PurchaseOrder, AuditLog) with ObjectId refs, validation, indexes, centralized error-handling, `asyncHandler`, seed script, and `/api/dev/vendors`. |
-| **Phase 2** | **Authentication & Role-Based Access Control (RBAC)** | [ ] Pending | JWT auth generation and verification, `protect` & `authorizeRoles` middleware, login/registration controllers, Redux `authSlice`, and client protected routes. |
+| **Phase 2** | **Authentication & Role-Based Access Control (RBAC)** | [x] Completed | POST `/api/auth/register`, `/login`, `/logout`, `/me`. JWTs with `{ id, role }`, `httpOnly` cookies + Axios interceptor, `authMiddleware`, `roleMiddleware`, Login/Register UI with validation, and `ProtectedRoute` by role. |
 | **Phase 3** | **Vendor Registration & Profile Management** | [ ] Pending | Multi-step onboarding wizard, file uploads with Multer for compliance docs, banking & tax verification. |
 | **Phase 4** | **Vendor Approval & Governance (Admin Portal)** | [ ] Pending | Admin verification workflows, approval/rejection audit trail, compliance review, status transitions. |
 | **Phase 5** | **Item Catalog & Requisition Management** | [ ] Pending | Catalog item models, inventory pricing, requisition requests, buyer requisition approvals. |
@@ -17,4 +17,4 @@ Progress tracker across all implementation phases of the VendorFlow procurement 
 
 ---
 
-*Last updated: Phase 1 Completed on October 11, 2026*
+*Last updated: Phase 2 Completed on October 11, 2026*
