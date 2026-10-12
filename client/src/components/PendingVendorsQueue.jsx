@@ -13,6 +13,7 @@ import {
   Eye,
   Loader2
 } from 'lucide-react';
+import { getAssetUrl } from '../api/axiosClient';
 
 const PendingVendorsQueue = ({ vendors, onStatusChange }) => {
   const dispatch = useDispatch();
@@ -238,7 +239,7 @@ const PendingVendorsQueue = ({ vendors, onStatusChange }) => {
                         </div>
                       </div>
                       <a
-                        href={`http://localhost:5000${doc.documentUrl}`}
+                        href={getAssetUrl(doc.documentUrl)}
                         target="_blank"
                         rel="noreferrer"
                         className="px-3 py-1 bg-sky-600/30 hover:bg-sky-600 text-sky-300 hover:text-white rounded text-xs flex items-center space-x-1"

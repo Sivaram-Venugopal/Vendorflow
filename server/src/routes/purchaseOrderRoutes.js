@@ -9,6 +9,10 @@ import {
   authMiddleware,
   roleMiddleware,
 } from '../middleware/authMiddleware.js';
+import {
+  validatePOCreate,
+  validatePOStatus,
+} from '../middleware/validator.js';
 
 const router = express.Router();
 
@@ -17,6 +21,7 @@ router.post(
   '/',
   authMiddleware,
   roleMiddleware('Buyer', 'Admin'),
+  validatePOCreate,
   createPurchaseOrder
 );
 
@@ -38,6 +43,7 @@ router.get(
 router.patch(
   '/:id/status',
   authMiddleware,
+  validatePOStatus,
   transitionPOStatus
 );
 

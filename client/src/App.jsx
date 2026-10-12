@@ -11,6 +11,9 @@ import AdminPage from './pages/AdminPage';
 import BuyerPage from './pages/BuyerPage';
 import VendorPage from './pages/VendorPage';
 
+import ErrorBoundary from './components/ErrorBoundary';
+import NotFoundPage from './pages/NotFoundPage';
+
 function App() {
   const dispatch = useDispatch();
 
@@ -20,53 +23,47 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Routes>
-      <Route path="/" element={<BaseLayout />}>
-        {/* Public Routes */}
-        <Route index element={<OverviewPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />
+    <ErrorBoundary>
+      <Routes>
+        <Route path="/" element={<BaseLayout />}>
+          {/* Public Routes */}
+          <Route index element={<OverviewPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
 
-        {/* Protected RBAC Routes */}
-        <Route
-          path="admin"
-          element={
-            <ProtectedRoute allowedRoles={['Admin']}>
-              <AdminPage />
-            </ProtectedRoute>
-          }
-        />
+          {/* Protected RBAC Routes */}
+          <Route
+            path="admin"
+            element={
+              <ProtectedRoute allowedRoles={['Admin']}>
+                <AdminPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="buyer"
-          element={
-            <ProtectedRoute allowedRoles={['Buyer', 'Admin']}>
-              <BuyerPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="buyer"
+            element={
+              <ProtectedRoute allowedRoles={['Buyer', 'Admin']}>
+                <BuyerPage />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="vendor"
-          element={
-            <ProtectedRoute allowedRoles={['Vendor']}>
-              <VendorPage />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="vendor"
+            element={
+              <ProtectedRoute allowedRoles={['Vendor']}>
+                <VendorPage />
+              </ProtectedRoute>
+            }
+          />
 
-        {/* 404 Route */}
-        <Route
-          path="*"
-          element={
-            <div className="text-center py-16">
-              <h2 className="text-2xl font-bold text-white">404 - Page Not Found</h2>
-              <p className="text-slate-400 mt-2">The page you requested does not exist.</p>
-            </div>
-          }
-        />
-      </Route>
-    </Routes>
+          {/* 404 Route */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
+    </ErrorBoundary>
   );
 }
 

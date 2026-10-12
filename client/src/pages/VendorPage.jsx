@@ -10,6 +10,7 @@ import VendorDashboardView from '../components/VendorDashboardView';
 import TierBadge from '../components/TierBadge';
 import POStatusBadge from '../components/POStatusBadge';
 import PODetailView from '../components/PODetailView';
+import { getAssetUrl } from '../api/axiosClient';
 import { 
   Truck, 
   UploadCloud, 
@@ -467,7 +468,7 @@ const VendorPage = () => {
                       </div>
 
                       <a
-                        href={`http://localhost:5000${doc.documentUrl}`}
+                        href={getAssetUrl(doc.documentUrl)}
                         target="_blank"
                         rel="noreferrer"
                         className="text-xs text-sky-400 hover:text-sky-300 font-semibold flex items-center space-x-1 pt-1 border-t border-slate-800"

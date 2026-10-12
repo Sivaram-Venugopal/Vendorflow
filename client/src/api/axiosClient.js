@@ -11,8 +11,24 @@ export const getAuthToken = () => {
   return memoryToken;
 };
 
+// Dynamic Server Origin & API Base URL
+export const SERVER_ORIGIN =
+  import.meta.env.VITE_SERVER_URL ||
+  (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '') : '') ||
+  (import.meta.env.PROD ? '' : 'http://localhost:5000');
+
+export const getAssetUrl = (urlPath) => {
+  if (!urlPath) return '';
+  if (urlPath.startsWith('http://') || urlPath.startsWith('https://')) return urlPath;
+  return `${SERVER_ORIGIN}${urlPath.startsWith('/') ? '' : '/'}${urlPath}`;
+};
+
+const defaultBaseURL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: defaultBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },

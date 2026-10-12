@@ -8,6 +8,7 @@ import {
   authMiddleware,
   roleMiddleware,
 } from '../middleware/authMiddleware.js';
+import { validateEvaluation } from '../middleware/validator.js';
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.post(
   '/',
   authMiddleware,
   roleMiddleware('Buyer', 'Admin'),
+  validateEvaluation,
   createEvaluation
 );
 

@@ -12,6 +12,10 @@ import {
   roleMiddleware,
 } from '../middleware/authMiddleware.js';
 import { uploadKYCDocument } from '../middleware/uploadMiddleware.js';
+import {
+  validateVendorRegister,
+  validateVendorStatus,
+} from '../middleware/validator.js';
 
 const router = express.Router();
 
@@ -28,6 +32,7 @@ router.post(
   '/',
   authMiddleware,
   roleMiddleware('Vendor'),
+  validateVendorRegister,
   registerVendorProfile
 );
 
@@ -52,6 +57,7 @@ router.patch(
   '/:id/status',
   authMiddleware,
   roleMiddleware('Admin'),
+  validateVendorStatus,
   updateVendorStatus
 );
 
