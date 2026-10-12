@@ -17,7 +17,7 @@ export const fetchHealthStatus = createAsyncThunk(
 
 const healthSlice = createSlice({
   name: 'health',
-  state: {
+  initialState: {
     data: null,
     status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
     error: null,
