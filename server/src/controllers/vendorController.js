@@ -28,11 +28,13 @@ export const registerVendorProfile = asyncHandler(async (req, res) => {
     throw new Error('Please provide all required company, tax ID, and contact fields');
   }
 
-  // Check if current user already has an active vendor registration
-  const existingVendorForUser = await Vendor.findOne({ owner: req.user._id });
-  if (existingVendorForUser) {
-    res.status(409);
-    throw new Error('A vendor profile already exists for your account');
+  // Check if current user already has an active vendor registration (only enforce for Vendor role)
+  if (req.user.role === 'Vendor') {
+    const existingVendorForUser = await Vendor.findOne({ owner: req.user._id });
+    if (existingVendorForUser) {
+      res.status(409);
+      throw new Error('A vendor profile already exists for your account');
+    }
   }
 
   // Check unique GSTIN and PAN
@@ -43,6 +45,10 @@ export const registerVendorProfile = asyncHandler(async (req, res) => {
     res.status(409);
     throw new Error('A vendor with this GSTIN/Tax ID or PAN number is already registered');
   }
+
+  const isInternalOnboarding = req.user.role === 'Admin' || req.user.role === 'Buyer';
+  const initialStatus = isInternalOnboarding ? (req.body.status || 'Approved') : 'Pending';
+  const initialTier = isInternalOnboarding ? 'Approved' : 'Approved';
 
   // Create vendor profile
   const vendor = await Vendor.create({
@@ -63,8 +69,9 @@ export const registerVendorProfile = asyncHandler(async (req, res) => {
       postalCode: '000000',
     },
     bankDetails: bankDetails || {},
-    status: 'Pending',
-    complianceScore: 50, // Initial onboarding score
+    status: initialStatus,
+    ratingTier: initialTier,
+    complianceScore: isInternalOnboarding ? 85 : 50,
   });
 
   // Record centralized audit log & notify admin

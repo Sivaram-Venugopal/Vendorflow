@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createPO } from '../store/slices/purchaseOrderSlice';
+import AddCompanyModal from './AddCompanyModal';
 import { 
   ShoppingBag, 
   Plus, 
@@ -11,7 +12,9 @@ import {
   MapPin, 
   Send, 
   AlertCircle, 
-  Loader2 
+  Loader2,
+  CheckCircle2,
+  UserPlus
 } from 'lucide-react';
 
 const POBuilder = ({ vendors = [], onComplete }) => {
@@ -24,6 +27,7 @@ const POBuilder = ({ vendors = [], onComplete }) => {
   );
   const [notes, setNotes] = useState('');
   const [currency, setCurrency] = useState('INR');
+  const [isAddCompanyOpen, setIsAddCompanyOpen] = useState(false);
 
   const [shippingAddress, setShippingAddress] = useState({
     city: 'Bengaluru',
@@ -33,11 +37,19 @@ const POBuilder = ({ vendors = [], onComplete }) => {
 
   // Dynamic Line Items
   const [items, setItems] = useState([
-    { itemCode: 'ITEM-001', description: 'Raw Machined Components', quantity: 10, unitPrice: 1500 },
+    { itemCode: 'ITEM-001', description: 'Raw Machined Components & Castings', quantity: 10, unitPrice: 1500 },
   ]);
 
   const [submitting, setSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [touched, setTouched] = useState({});
+
+  // Sync vendorId whenever vendors list updates
+  useEffect(() => {
+    if (!vendorId && vendors.length > 0) {
+      setVendorId(vendors[0]._id);
+    }
+  }, [vendors, vendorId]);
 
   // Auto-computed totals
   const subtotal = items.reduce(
@@ -68,11 +80,19 @@ const POBuilder = ({ vendors = [], onComplete }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!vendorId) {
-      setErrorMsg('Please select a supplier');
+      setErrorMsg('Please select an authorized supplier company from the list');
       return;
     }
     if (!title.trim()) {
-      setErrorMsg('PO title is required');
+      setErrorMsg('Purchase order title is required');
+      return;
+    }
+
+    const hasInvalidLine = items.some(
+      (item) => !item.description.trim() || Number(item.quantity) <= 0 || Number(item.unitPrice) < 0
+    );
+    if (hasInvalidLine) {
+      setErrorMsg('Please ensure all line items have a valid description, quantity > 0, and non-negative price.');
       return;
     }
 
@@ -80,47 +100,78 @@ const POBuilder = ({ vendors = [], onComplete }) => {
     setErrorMsg('');
 
     try {
-      await dispatch(
+      const result = await dispatch(
         createPO({
-          vendorId,
-          title,
+          vendor: vendorId,
+          vendorId: vendorId,
+          title: title.trim(),
           deliveryDate,
+          expectedDeliveryDate: deliveryDate,
           shippingAddress,
-          notes,
+          notes: notes.trim(),
           currency,
           items: items.map((i) => ({
-            itemCode: i.itemCode,
-            description: i.description || 'Standard procurement line item',
+            itemCode: i.itemCode || 'ITEM',
+            description: i.description.trim() || 'Standard procurement line item',
             quantity: Number(i.quantity),
             unitPrice: Number(i.unitPrice),
           })),
         })
       ).unwrap();
 
-      if (onComplete) onComplete();
+      if (onComplete) onComplete(result);
     } catch (err) {
-      setErrorMsg(typeof err === 'string' ? err : 'PO creation failed');
+      setErrorMsg(typeof err === 'string' ? err : 'Purchase order creation failed. Please check your inputs.');
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div className="bg-slate-800/90 rounded-2xl border border-slate-700/80 p-6 md:p-8 shadow-2xl backdrop-blur space-y-6">
-      <div className="border-b border-slate-700 pb-4">
-        <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-          <ShoppingBag className="w-5 h-5 text-indigo-400" />
-          <span>Purchase Order Draft Builder</span>
-        </h3>
-        <p className="text-xs text-slate-400 mt-0.5">
-          Draft a new purchase order with automatic subtotal, 18% GST calculation, and delivery scheduling.
-        </p>
+    <div className="bg-white rounded-2xl border border-red-200 p-6 md:p-8 shadow-xl space-y-6">
+      {/* Red Accent Header */}
+      <div className="border-b border-slate-100 pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div className="flex items-center space-x-2 text-red-600 mb-1">
+            <ShoppingBag className="w-5 h-5" />
+            <span className="text-xs font-bold uppercase tracking-wider">Purchase Order Builder</span>
+          </div>
+          <h2 className="text-xl font-bold text-slate-900 tracking-tight">Draft New Purchase Requisition</h2>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Create an itemized purchase order with automated subtotal, 18% GST calculation, and workflow routing.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsAddCompanyOpen(true)}
+          className="px-3.5 py-2 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold transition-colors flex items-center space-x-1.5 self-start sm:self-auto"
+        >
+          <UserPlus className="w-4 h-4 text-red-600" />
+          <span>+ Onboard Company</span>
+        </button>
       </div>
 
       {errorMsg && (
-        <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-rose-400 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl text-red-700 text-xs flex items-center space-x-2 animate-in fade-in">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-600" />
           <span>{errorMsg}</span>
+        </div>
+      )}
+
+      {vendors.length === 0 && (
+        <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0" />
+            <span>No approved suppliers found yet. Please onboard an approved supplier first.</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsAddCompanyOpen(true)}
+            className="ml-3 px-3 py-1 bg-amber-600 text-white rounded-lg font-bold text-[11px] hover:bg-amber-700 transition-colors"
+          >
+            Add Supplier Now
+          </button>
         </div>
       )}
 
@@ -128,27 +179,39 @@ const POBuilder = ({ vendors = [], onComplete }) => {
         {/* Header Metadata */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="md:col-span-2">
-            <label className="block text-xs font-semibold uppercase text-slate-300 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
               PO Title / Work Order Description *
             </label>
             <input
               type="text"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onFocus={() => setErrorMsg('')}
+              onChange={(e) => {
+                setTitle(e.target.value);
+                if (errorMsg) setErrorMsg('');
+              }}
               placeholder="e.g. Q1 Industrial Equipment & Precision Assemblies"
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
-              required
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white transition-all shadow-sm"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-300 mb-1">
-              Select Supplier / Vendor *
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700">
+                Target Supplier *
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsAddCompanyOpen(true)}
+                className="text-[11px] text-red-600 font-semibold hover:underline"
+              >
+                + New
+              </button>
+            </div>
             <select
               value={vendorId}
               onChange={(e) => setVendorId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
             >
               {vendors.map((v) => (
                 <option key={v._id} value={v._id}>
@@ -159,127 +222,124 @@ const POBuilder = ({ vendors = [], onComplete }) => {
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-300 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
               Expected Delivery Date *
             </label>
             <input
               type="date"
               value={deliveryDate}
               onChange={(e) => setDeliveryDate(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
-              required
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-300 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
               Destination City
             </label>
             <input
               type="text"
               value={shippingAddress.city}
               onChange={(e) => setShippingAddress({ ...shippingAddress, city: e.target.value })}
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase text-slate-300 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
               Currency
             </label>
             <select
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200"
+              className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
             >
-              <option value="INR">INR (₹)</option>
-              <option value="USD">USD ($)</option>
-              <option value="EUR">EUR (€)</option>
+              <option value="INR">INR (₹) - Indian Rupee</option>
+              <option value="USD">USD ($) - US Dollar</option>
+              <option value="EUR">EUR (€) - Euro</option>
+              <option value="GBP">GBP (£) - British Pound</option>
             </select>
           </div>
         </div>
 
-        {/* Dynamic Line Items Table */}
-        <div className="bg-slate-900/60 p-4 rounded-xl border border-slate-700/60 space-y-3">
-          <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
+        {/* Dynamic Line Items Section */}
+        <div className="space-y-3 pt-2">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
               Procurement Line Items ({items.length})
-            </h4>
+            </span>
             <button
               type="button"
               onClick={addItemRow}
-              className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs rounded border border-slate-700 flex items-center space-x-1"
+              className="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-xs font-semibold flex items-center space-x-1 border border-red-200 transition-colors"
             >
               <Plus className="w-3.5 h-3.5" />
-              <span>Add Line Item</span>
+              <span>Add Item</span>
             </button>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
+            <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-700 text-slate-400 uppercase">
-                  <th className="py-2 px-2 w-28">Item SKU</th>
-                  <th className="py-2 px-2">Description *</th>
-                  <th className="py-2 px-2 w-20">Qty *</th>
-                  <th className="py-2 px-2 w-28">Unit Price *</th>
-                  <th className="py-2 px-2 w-28 text-right">Line Total</th>
-                  <th className="py-2 px-2 w-10 text-center"></th>
+                <tr className="bg-red-50/50 border-b border-slate-200 text-slate-700 uppercase font-bold text-[11px]">
+                  <th className="py-2.5 px-3">SKU / Code</th>
+                  <th className="py-2.5 px-3">Item Description *</th>
+                  <th className="py-2.5 px-3 w-28">Quantity</th>
+                  <th className="py-2.5 px-3 w-32">Unit Price ({currency})</th>
+                  <th className="py-2.5 px-3 w-32 text-right">Line Total</th>
+                  <th className="py-2.5 px-3 w-12 text-center"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800">
+              <tbody className="divide-y divide-slate-100 bg-white">
                 {items.map((item, idx) => {
                   const lineTotal = Number(item.quantity || 0) * Number(item.unitPrice || 0);
                   return (
-                    <tr key={idx} className="hover:bg-slate-800/40">
-                      <td className="py-2 px-2">
+                    <tr key={idx} className="hover:bg-slate-50/80 transition-colors">
+                      <td className="py-2 px-3">
                         <input
                           type="text"
                           value={item.itemCode}
                           onChange={(e) => handleItemChange(idx, 'itemCode', e.target.value)}
-                          placeholder="SKU"
-                          className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-200 font-mono"
+                          placeholder="ITEM-001"
+                          className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800"
                         />
                       </td>
-                      <td className="py-2 px-2">
+                      <td className="py-2 px-3">
                         <input
                           type="text"
                           value={item.description}
                           onChange={(e) => handleItemChange(idx, 'description', e.target.value)}
-                          placeholder="Item specification & description"
-                          className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-200"
-                          required
+                          placeholder="Specification or component name"
+                          className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-800"
                         />
                       </td>
-                      <td className="py-2 px-2">
+                      <td className="py-2 px-3">
                         <input
                           type="number"
                           min="1"
                           value={item.quantity}
                           onChange={(e) => handleItemChange(idx, 'quantity', e.target.value)}
-                          className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-200 font-mono"
-                          required
+                          className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 text-right"
                         />
                       </td>
-                      <td className="py-2 px-2">
+                      <td className="py-2 px-3">
                         <input
                           type="number"
                           min="0"
                           value={item.unitPrice}
                           onChange={(e) => handleItemChange(idx, 'unitPrice', e.target.value)}
-                          className="w-full px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs text-slate-200 font-mono"
-                          required
+                          className="w-full px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 text-right"
                         />
                       </td>
-                      <td className="py-2 px-2 text-right font-mono font-bold text-slate-200">
+                      <td className="py-2 px-3 text-right font-mono font-bold text-slate-800">
                         {lineTotal.toLocaleString()} {currency}
                       </td>
-                      <td className="py-2 px-2 text-center">
+                      <td className="py-2 px-3 text-center">
                         <button
                           type="button"
                           onClick={() => removeItemRow(idx)}
                           disabled={items.length <= 1}
-                          className="text-slate-500 hover:text-rose-400 disabled:opacity-30"
+                          className="p-1 rounded text-slate-400 hover:text-red-600 disabled:opacity-30 transition-colors"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -292,55 +352,71 @@ const POBuilder = ({ vendors = [], onComplete }) => {
           </div>
         </div>
 
-        {/* Auto-Computed Financial Summary */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-900/80 p-4 rounded-xl border border-slate-700/80 gap-4">
-          <div className="w-full md:w-1/2">
-            <label className="block text-xs font-semibold uppercase text-slate-300 mb-1">
-              Procurement Terms & Instructions
+        {/* Notes & Summary Box */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              Special Instructions / Delivery Terms
             </label>
-            <input
-              type="text"
+            <textarea
+              rows="3"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="e.g. Include Certificate of Analysis and GST E-way bill"
-              className="w-full px-3 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200"
+              placeholder="e.g. Standard dispatch via surface logistics. Inspection report required on delivery."
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
             />
           </div>
 
-          <div className="w-full md:w-64 space-y-1.5 text-xs text-right">
-            <div className="flex justify-between text-slate-400">
-              <span>Subtotal:</span>
-              <span className="font-mono text-slate-200">{subtotal.toLocaleString()} {currency}</span>
-            </div>
-            <div className="flex justify-between text-slate-400">
-              <span>GST (18%):</span>
-              <span className="font-mono text-slate-200">{taxAmount.toLocaleString()} {currency}</span>
-            </div>
-            <div className="flex justify-between text-sm font-bold text-white pt-1 border-t border-slate-700">
-              <span>Grand Total:</span>
-              <span className="font-mono text-emerald-400">{totalAmount.toLocaleString()} {currency}</span>
+          <div className="p-4 bg-red-50/50 rounded-xl border border-red-100 flex flex-col justify-between">
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between text-slate-600">
+                <span>Subtotal ({items.length} items):</span>
+                <span className="font-mono font-semibold">{subtotal.toLocaleString()} {currency}</span>
+              </div>
+              <div className="flex justify-between text-slate-600">
+                <span>GST Tax (18% Statutory):</span>
+                <span className="font-mono font-semibold">{taxAmount.toLocaleString()} {currency}</span>
+              </div>
+              <div className="border-t border-red-200/80 pt-2 flex justify-between text-sm font-bold text-slate-900">
+                <span>Total Requisition Value:</span>
+                <span className="font-mono text-red-600 text-base">{totalAmount.toLocaleString()} {currency}</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-lg text-sm font-semibold flex items-center justify-center space-x-2 transition-colors shadow-lg shadow-indigo-600/20"
-        >
-          {submitting ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span>Generating Purchase Order...</span>
-            </>
-          ) : (
-            <>
-              <ShoppingBag className="w-4 h-4" />
-              <span>Create Purchase Order (Draft)</span>
-            </>
-          )}
-        </button>
+        {/* Submit Actions */}
+        <div className="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+          <button
+            type="submit"
+            disabled={submitting || vendors.length === 0}
+            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center space-x-2 shadow-lg shadow-red-600/20 transition-all hover:scale-[1.02] disabled:opacity-50"
+          >
+            {submitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Creating Purchase Order...</span>
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                <span>Save & Submit Purchase Order</span>
+              </>
+            )}
+          </button>
+        </div>
       </form>
+
+      {/* Add Company Modal */}
+      <AddCompanyModal
+        isOpen={isAddCompanyOpen}
+        onClose={() => setIsAddCompanyOpen(false)}
+        onCompanyAdded={(newVendor) => {
+          if (newVendor && newVendor._id) {
+            setVendorId(newVendor._id);
+          }
+        }}
+      />
     </div>
   );
 };

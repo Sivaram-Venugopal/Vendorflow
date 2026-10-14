@@ -74,49 +74,49 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
   return (
     <div className="space-y-6">
       {/* Top Header Card */}
-      <div className="p-6 bg-slate-800/80 rounded-2xl border border-slate-700/80 shadow-xl backdrop-blur flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <button
             onClick={onBack}
-            className="text-xs text-slate-400 hover:text-white flex items-center space-x-1 mb-2"
+            className="text-xs text-slate-500 hover:text-slate-800 font-bold flex items-center space-x-1 mb-2 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Orders List</span>
           </button>
           <div className="flex items-center space-x-3">
-            <h2 className="text-2xl font-bold text-white font-mono">{po.poNumber}</h2>
+            <h2 className="text-2xl font-extrabold text-slate-900 font-mono">{po.poNumber}</h2>
             <POStatusBadge status={po.status} />
           </div>
-          <p className="text-sm text-slate-300 mt-1 font-medium">{po.title}</p>
+          <p className="text-sm text-slate-600 mt-1 font-semibold">{po.title}</p>
         </div>
 
         {/* Total Cost Card */}
-        <div className="text-right bg-slate-900/60 p-4 rounded-xl border border-slate-700/60">
-          <div className="text-[10px] uppercase font-semibold text-slate-400">Total Purchase Value</div>
-          <div className="text-2xl font-black text-emerald-400 font-mono">
+        <div className="text-right bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <div className="text-[10px] uppercase font-bold text-slate-500">Total Purchase Value</div>
+          <div className="text-2xl font-black text-emerald-600 font-mono">
             {po.totalAmount?.toLocaleString()} {po.currency}
           </div>
-          <div className="text-[11px] text-slate-400">
-            Subtotal: {po.subtotal?.toLocaleString()} + GST: {po.taxAmount?.toLocaleString()}
+          <div className="text-[11px] text-slate-500 font-medium">
+            Subtotal: {po.subtotal?.toLocaleString()} + GST (18%): {po.taxAmount?.toLocaleString()}
           </div>
         </div>
       </div>
 
       {errorMsg && (
-        <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-lg text-rose-400 text-xs flex items-center space-x-2">
-          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+        <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-700 text-xs font-semibold flex items-center space-x-2">
+          <AlertCircle className="w-4 h-4 flex-shrink-0 text-rose-600" />
           <span>{errorMsg}</span>
         </div>
       )}
 
       {/* Role-Based Action Bar */}
-      <div className="p-5 bg-indigo-950/40 border border-indigo-800/60 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-5 bg-indigo-50/60 border border-indigo-200 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-300">
+          <h4 className="text-xs font-extrabold uppercase tracking-wider text-indigo-900">
             Lifecycle Workflow Actions ({user?.role})
           </h4>
-          <p className="text-xs text-slate-300 mt-0.5">
-            Current Stage: <span className="text-white font-semibold">{po.status}</span>. Perform authorized role transitions below.
+          <p className="text-xs text-slate-600 mt-0.5">
+            Current Stage: <span className="text-indigo-700 font-bold">{po.status}</span>. Perform authorized role transitions below.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
             <button
               onClick={() => handleTransition('Pending Approval')}
               disabled={updating}
-              className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+              className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Submit for Approval</span>
@@ -140,7 +140,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
               <button
                 onClick={() => handleTransition('Approved')}
                 disabled={updating}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
               >
                 <CheckCircle className="w-3.5 h-3.5" />
                 <span>Approve Purchase Order</span>
@@ -148,7 +148,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
               <button
                 onClick={() => handleTransition('Rejected')}
                 disabled={updating}
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
               >
                 <XCircle className="w-3.5 h-3.5" />
                 <span>Reject</span>
@@ -161,7 +161,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
             <button
               onClick={() => handleTransition('Sent')}
               disabled={updating}
-              className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Send Order to Vendor</span>
@@ -174,7 +174,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
               <button
                 onClick={() => handleTransition('Acknowledged')}
                 disabled={updating}
-                className="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 <span>Acknowledge Order</span>
@@ -182,7 +182,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
               <button
                 onClick={() => handleTransition('Declined')}
                 disabled={updating}
-                className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+                className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
               >
                 <XCircle className="w-3.5 h-3.5" />
                 <span>Decline Order</span>
@@ -195,7 +195,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
             <button
               onClick={() => handleTransition('Delivered')}
               disabled={updating}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
             >
               <Truck className="w-3.5 h-3.5" />
               <span>Mark as Delivered</span>
@@ -207,7 +207,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
             <button
               onClick={() => handleTransition('Invoiced')}
               disabled={updating}
-              className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+              className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
             >
               <Receipt className="w-3.5 h-3.5" />
               <span>Register Invoice</span>
@@ -219,7 +219,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
             <button
               onClick={() => handleTransition('Closed')}
               disabled={updating}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1"
+              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs transition-colors"
             >
               <Archive className="w-3.5 h-3.5" />
               <span>Close Purchase Order</span>
@@ -232,9 +232,9 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
       <POTimelineStepper currentStatus={po.status} history={po.history} />
 
       {/* Line Items Table */}
-      <div className="bg-slate-800/80 rounded-2xl border border-slate-700/80 overflow-hidden shadow-xl backdrop-blur">
-        <div className="p-4 border-b border-slate-700/80">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+      <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+          <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
             Procurement Line Items ({po.items?.length || 0})
           </h4>
         </div>
@@ -242,7 +242,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs">
             <thead>
-              <tr className="bg-slate-900/60 border-b border-slate-700/60 text-slate-400 uppercase font-semibold">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-600 uppercase font-bold text-[11px] tracking-wider">
                 <th className="py-3 px-4">Item SKU</th>
                 <th className="py-3 px-4">Description</th>
                 <th className="py-3 px-4">Quantity</th>
@@ -250,14 +250,14 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
                 <th className="py-3 px-4 text-right">Line Total</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700/50 text-slate-200">
+            <tbody className="divide-y divide-slate-100 text-slate-800">
               {po.items?.map((item, idx) => (
-                <tr key={idx} className="hover:bg-slate-700/30">
-                  <td className="py-3 px-4 font-mono text-slate-400">{item.itemCode || `SKU-${idx + 1}`}</td>
-                  <td className="py-3 px-4 font-semibold text-white">{item.description}</td>
-                  <td className="py-3 px-4 font-mono">{item.quantity}</td>
-                  <td className="py-3 px-4 font-mono">{item.unitPrice?.toLocaleString()} {po.currency}</td>
-                  <td className="py-3 px-4 text-right font-mono font-bold text-sky-400">
+                <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                  <td className="py-3 px-4 font-mono font-medium text-slate-500">{item.itemCode || `SKU-${idx + 1}`}</td>
+                  <td className="py-3 px-4 font-bold text-slate-900">{item.description}</td>
+                  <td className="py-3 px-4 font-mono font-bold text-slate-800">{item.quantity}</td>
+                  <td className="py-3 px-4 font-mono text-slate-700">{item.unitPrice?.toLocaleString()} {po.currency}</td>
+                  <td className="py-3 px-4 text-right font-mono font-bold text-indigo-600">
                     {item.totalAmount?.toLocaleString()} {po.currency}
                   </td>
                 </tr>

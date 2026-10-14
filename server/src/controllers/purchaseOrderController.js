@@ -22,15 +22,19 @@ const generatePONumber = async () => {
 export const createPurchaseOrder = asyncHandler(async (req, res) => {
   const {
     vendorId,
+    vendor: vendorParam,
     title,
     items,
     deliveryDate,
+    expectedDeliveryDate,
     shippingAddress,
     notes,
     currency,
   } = req.body;
 
-  if (!vendorId) {
+  const targetVendorId = vendorId || vendorParam;
+
+  if (!targetVendorId) {
     res.status(400);
     throw new Error('Target Vendor is required');
   }
@@ -40,7 +44,7 @@ export const createPurchaseOrder = asyncHandler(async (req, res) => {
     throw new Error('Title and at least one line item are required');
   }
 
-  const vendor = await Vendor.findById(vendorId);
+  const vendor = await Vendor.findById(targetVendorId);
   if (!vendor) {
     res.status(404);
     throw new Error('Vendor not found');
@@ -74,7 +78,9 @@ export const createPurchaseOrder = asyncHandler(async (req, res) => {
     totalAmount,
     currency: currency || 'INR',
     status: 'Draft',
-    deliveryDate: deliveryDate ? new Date(deliveryDate) : new Date(Date.now() + 14 * 86400000),
+    deliveryDate: (deliveryDate || expectedDeliveryDate)
+      ? new Date(deliveryDate || expectedDeliveryDate)
+      : new Date(Date.now() + 14 * 86400000),
     shippingAddress: shippingAddress || {
       city: 'Default City',
       state: 'Default State',

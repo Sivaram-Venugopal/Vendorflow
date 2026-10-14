@@ -27,11 +27,11 @@ router.get(
   getMyVendorProfile
 );
 
-// 2. Self-register vendor profile (creates in status=Pending)
+// 2. Register vendor profile (Vendor self-registration or Buyer/Admin onboarding)
 router.post(
   '/',
   authMiddleware,
-  roleMiddleware('Vendor'),
+  roleMiddleware('Vendor', 'Admin', 'Buyer'),
   validateVendorRegister,
   registerVendorProfile
 );

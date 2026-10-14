@@ -143,9 +143,6 @@ export const validateEvaluation = [
  * Purchase Order Validations
  */
 export const validatePOCreate = [
-  body('vendor')
-    .isMongoId()
-    .withMessage('Valid vendor ID is required'),
   body('title')
     .trim()
     .notEmpty()
@@ -168,9 +165,16 @@ export const validatePOCreate = [
     .isIn(['INR', 'USD', 'EUR', 'GBP'])
     .withMessage('Invalid currency code'),
   body('expectedDeliveryDate')
-    .optional()
-    .isISO8601()
-    .withMessage('Expected delivery date must be a valid ISO date'),
+    .optional(),
+  body('deliveryDate')
+    .optional(),
+  body().custom((value) => {
+    const vId = value.vendor || value.vendorId;
+    if (!vId) {
+      throw new Error('Valid vendor ID is required');
+    }
+    return true;
+  }),
   validate,
 ];
 

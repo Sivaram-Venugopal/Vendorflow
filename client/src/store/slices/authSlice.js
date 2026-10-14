@@ -55,8 +55,8 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await api.post('/auth/logout');
       setAuthToken(null);
+      await api.post('/auth/logout');
       return null;
     } catch (error) {
       setAuthToken(null);
@@ -78,6 +78,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     clearAuthError: (state) => {
+      state.error = null;
+    },
+    logoutImmediate: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.status = 'idle';
       state.error = null;
     },
   },
@@ -136,8 +142,20 @@ const authSlice = createSlice({
         state.isInitialized = true;
       })
 
-      // Logout
+      // Logout (clean state unconditionally in pending, fulfilled, or rejected)
+      .addCase(logout.pending, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.status = 'idle';
+        state.error = null;
+      })
       .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+        state.isAuthenticated = false;
+        state.status = 'idle';
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.status = 'idle';
@@ -146,5 +164,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearAuthError } = authSlice.actions;
+export const { clearAuthError, logoutImmediate } = authSlice.actions;
 export default authSlice.reducer;

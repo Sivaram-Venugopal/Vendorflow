@@ -134,9 +134,13 @@ export const loginUser = asyncHandler(async (req, res) => {
  * @access  Public
  */
 export const logoutUser = asyncHandler(async (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
   res.cookie('token', '', {
     httpOnly: true,
     expires: new Date(0), // Expire immediately
+    path: '/',
+    secure: isProduction,
+    sameSite: isProduction ? 'strict' : 'lax',
   });
 
   res.status(200).json({

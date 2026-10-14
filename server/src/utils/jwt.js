@@ -30,6 +30,7 @@ export const generateTokenAndSetCookie = (res, user) => {
     secure: isProduction, // HTTPS only in production
     sameSite: isProduction ? 'strict' : 'lax', // CSRF protection
     maxAge: 60 * 60 * 1000, // 1 hour in ms (short-lived access token)
+    path: '/',
   });
 
   return token;

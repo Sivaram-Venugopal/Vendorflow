@@ -10,6 +10,7 @@ import EvaluatorForm from '../components/EvaluatorForm';
 import VendorScorecardView from '../components/VendorScorecardView';
 import TierBadge from '../components/TierBadge';
 import BuyerDashboardView from '../components/BuyerDashboardView';
+import AddCompanyModal from '../components/AddCompanyModal';
 import { 
   LayoutDashboard,
   ShoppingBag, 
@@ -17,14 +18,15 @@ import {
   FileText, 
   PlusCircle, 
   Search, 
-  ArrowLeft,
-  Calendar,
-  Layers,
-  Send,
-  Eye,
-  Star,
-  RefreshCw,
-  TrendingUp
+  ArrowLeft, 
+  Send, 
+  Eye, 
+  Star, 
+  RefreshCw, 
+  TrendingUp,
+  UserPlus,
+  Building2,
+  CheckCircle2
 } from 'lucide-react';
 
 const BuyerPage = () => {
@@ -39,6 +41,7 @@ const BuyerPage = () => {
   const [selectedPO, setSelectedPO] = useState(null);
   const [statusFilter, setStatusFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isAddCompanyOpen, setIsAddCompanyOpen] = useState(false);
 
   // Evaluation states
   const [evaluatingVendor, setEvaluatingVendor] = useState(null);
@@ -99,27 +102,27 @@ const BuyerPage = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header Banner */}
-      <div className="border-b border-slate-800 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      {/* Header Banner - White & Red Modern Aesthetic */}
+      <div className="border-b border-slate-200 pb-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-indigo-400 mb-1">
+          <div className="flex items-center space-x-2 text-red-600 mb-1">
             <ShoppingBag className="w-5 h-5" />
-            <span className="text-xs font-semibold uppercase tracking-wider">Procurement Operations</span>
+            <span className="text-xs font-bold uppercase tracking-wider">Procurement Operations</span>
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">Buyer Procurement & Lifecycle</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Buyer Procurement & Lifecycle</h1>
+          <p className="text-xs text-slate-500 mt-0.5">
             Draft Purchase Orders, enforce FSM approvals, dispatch to vendors, and evaluate supplier scorecards.
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* Main Top Tab Switcher */}
           {(activeTab === 'dashboard' || activeTab === 'pos' || activeTab === 'evaluations') && (
-            <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
+            <div className="flex items-center bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
               <button
                 onClick={() => setActiveTab('dashboard')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
-                  activeTab === 'dashboard' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                  activeTab === 'dashboard' ? 'bg-red-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 <LayoutDashboard className="w-3.5 h-3.5" />
@@ -127,30 +130,39 @@ const BuyerPage = () => {
               </button>
               <button
                 onClick={() => setActiveTab('pos')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
-                  activeTab === 'pos' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                  activeTab === 'pos' ? 'bg-red-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 <FileText className="w-3.5 h-3.5" />
-                <span>My Purchase Orders ({orders.length})</span>
+                <span>My POs ({orders.length})</span>
               </button>
               <button
                 onClick={() => setActiveTab('evaluations')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center space-x-1.5 ${
-                  activeTab === 'evaluations' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:text-white'
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                  activeTab === 'evaluations' ? 'bg-red-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
                 <Award className="w-3.5 h-3.5" />
-                <span>Supplier Evaluations</span>
+                <span>Suppliers</span>
               </button>
             </div>
           )}
+
+          {/* Quick Onboard Company Button */}
+          <button
+            onClick={() => setIsAddCompanyOpen(true)}
+            className="px-3.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-colors shadow-xs"
+          >
+            <UserPlus className="w-3.5 h-3.5 text-red-600" />
+            <span>+ Onboard Company</span>
+          </button>
 
           {/* Back Buttons for Sub-views */}
           {activeTab === 'new-po' && (
             <button
               onClick={() => setActiveTab('pos')}
-              className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center space-x-1.5"
+              className="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Cancel Draft</span>
@@ -160,7 +172,7 @@ const BuyerPage = () => {
           {activeTab === 'view-po' && (
             <button
               onClick={() => setActiveTab('pos')}
-              className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center space-x-1.5"
+              className="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to My POs</span>
@@ -170,7 +182,7 @@ const BuyerPage = () => {
           {(activeTab === 'new-evaluation' || activeTab === 'view-scorecard') && (
             <button
               onClick={() => setActiveTab('evaluations')}
-              className="px-3.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold flex items-center space-x-1.5"
+              className="px-3.5 py-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-xs"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Directory</span>
@@ -179,7 +191,7 @@ const BuyerPage = () => {
 
           <button
             onClick={handleRefresh}
-            className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-colors"
+            className="p-2 bg-white hover:bg-slate-50 text-slate-600 rounded-xl border border-slate-200 transition-colors shadow-xs"
             title="Refresh records"
           >
             <RefreshCw className="w-4 h-4" />
@@ -203,23 +215,23 @@ const BuyerPage = () => {
       {activeTab === 'pos' && (
         <div className="space-y-6">
           {/* Action & Filter Toolbar */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-slate-800/80 p-4 rounded-2xl border border-slate-700/80 shadow-lg backdrop-blur">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
               <div className="relative w-full sm:w-64">
-                <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search by PO#, title, vendor..."
-                  className="w-full pl-8 pr-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
+                  className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
                 />
               </div>
 
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-indigo-500"
+                className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-lg px-3 py-1.5 focus:outline-none focus:border-red-500 focus:bg-white"
               >
                 <option value="All">All Statuses ({orders.length})</option>
                 <option value="Draft">Draft</option>
@@ -235,28 +247,37 @@ const BuyerPage = () => {
               </select>
             </div>
 
-            <button
-              onClick={() => setActiveTab('new-po')}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 shadow-md shadow-indigo-600/30 transition-all hover:scale-[1.02]"
-            >
-              <PlusCircle className="w-4 h-4" />
-              <span>Draft New Purchase Order</span>
-            </button>
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={() => setIsAddCompanyOpen(true)}
+                className="px-3.5 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-colors shadow-xs"
+              >
+                <UserPlus className="w-4 h-4 text-red-600" />
+                <span>+ Onboard Company</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('new-po')}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 shadow-md shadow-red-600/20 transition-all hover:scale-[1.02]"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>Draft New Purchase Order</span>
+              </button>
+            </div>
           </div>
 
           {/* Orders Table */}
-          <div className="bg-slate-800/80 rounded-2xl border border-slate-700/80 overflow-hidden shadow-xl backdrop-blur">
-            <div className="p-4 border-b border-slate-700/80 flex items-center justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div className="p-4 border-b border-slate-100 flex items-center justify-between">
               <div>
-                <h3 className="font-bold text-white text-base">Purchase Orders Directory</h3>
-                <p className="text-xs text-slate-400">Total {filteredPOs.length} order(s) match criteria</p>
+                <h3 className="font-bold text-slate-900 text-base">Purchase Orders Directory</h3>
+                <p className="text-xs text-slate-500">Total {filteredPOs.length} order(s) match criteria</p>
               </div>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-900/60 border-b border-slate-700/60 text-slate-400 uppercase font-semibold">
+                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase font-bold text-[11px]">
                     <th className="py-3 px-4">PO Reference</th>
                     <th className="py-3 px-4">Title / Scope</th>
                     <th className="py-3 px-4">Target Supplier</th>
@@ -266,7 +287,7 @@ const BuyerPage = () => {
                     <th className="py-3 px-4 text-right">Workflow Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700/50 text-slate-200">
+                <tbody className="divide-y divide-slate-100 text-slate-700">
                   {filteredPOs.length === 0 ? (
                     <tr>
                       <td colSpan={7} className="py-8 text-center text-slate-400">
@@ -275,24 +296,24 @@ const BuyerPage = () => {
                     </tr>
                   ) : (
                     filteredPOs.map((order) => (
-                      <tr key={order._id} className="hover:bg-slate-700/30 transition-colors">
-                        <td className="py-3.5 px-4 font-mono font-bold text-indigo-400">
+                      <tr key={order._id} className="hover:bg-red-50/20 transition-colors">
+                        <td className="py-3.5 px-4 font-mono font-bold text-red-600">
                           {order.poNumber}
                         </td>
                         <td className="py-3.5 px-4">
-                          <div className="font-semibold text-white max-w-xs truncate">{order.title}</div>
+                          <div className="font-bold text-slate-900 max-w-xs truncate">{order.title}</div>
                           <div className="text-[11px] text-slate-400">{order.items?.length || 0} line item(s)</div>
                         </td>
-                        <td className="py-3.5 px-4 font-medium text-slate-200">
+                        <td className="py-3.5 px-4 font-medium text-slate-800">
                           {order.vendor?.companyName || 'Unknown Vendor'}
                         </td>
-                        <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
+                        <td className="py-3.5 px-4 font-mono font-bold text-emerald-700">
                           {order.totalAmount?.toLocaleString()} {order.currency}
                         </td>
                         <td className="py-3.5 px-4">
                           <POStatusBadge status={order.status} />
                         </td>
-                        <td className="py-3.5 px-4 text-slate-400">
+                        <td className="py-3.5 px-4 text-slate-500">
                           {new Date(order.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3.5 px-4 text-right">
@@ -301,7 +322,7 @@ const BuyerPage = () => {
                             {order.status === 'Draft' && (
                               <button
                                 onClick={() => handleQuickSubmitDraft(order)}
-                                className="px-2.5 py-1 bg-amber-600/80 hover:bg-amber-500 text-white rounded text-[11px] font-semibold flex items-center space-x-1"
+                                className="px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded text-[11px] font-bold flex items-center space-x-1"
                                 title="Submit Draft to Admin for Approval"
                               >
                                 <Send className="w-3 h-3" />
@@ -313,7 +334,7 @@ const BuyerPage = () => {
                             {order.status === 'Approved' && (
                               <button
                                 onClick={() => handleQuickSendApproved(order)}
-                                className="px-2.5 py-1 bg-sky-600/80 hover:bg-sky-500 text-white rounded text-[11px] font-semibold flex items-center space-x-1"
+                                className="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[11px] font-bold flex items-center space-x-1"
                                 title="Send Approved PO to Supplier"
                               >
                                 <Send className="w-3 h-3" />
@@ -323,9 +344,9 @@ const BuyerPage = () => {
 
                             <button
                               onClick={() => handleOpenPODetails(order)}
-                              className="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded text-[11px] font-semibold flex items-center space-x-1"
+                              className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded text-[11px] font-bold flex items-center space-x-1 border border-slate-200"
                             >
-                              <Eye className="w-3 h-3" />
+                              <Eye className="w-3 h-3 text-slate-600" />
                               <span>Details</span>
                             </button>
                           </div>
@@ -366,29 +387,38 @@ const BuyerPage = () => {
       {/* 4. SUPPLIER DIRECTORY FOR EVALUATIONS */}
       {activeTab === 'evaluations' && (
         <div className="space-y-6">
-          <div className="bg-slate-800/80 rounded-2xl border border-slate-700/80 overflow-hidden shadow-xl backdrop-blur">
-            <div className="p-4 border-b border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div>
-                <h3 className="font-bold text-white text-base">Approved Supplier Directory</h3>
-                <p className="text-xs text-slate-400">Audit supplier performance and issue weighted scorecard evaluations</p>
+                <h3 className="font-bold text-slate-900 text-base">Approved Supplier Directory</h3>
+                <p className="text-xs text-slate-500">Audit supplier performance and issue weighted scorecard evaluations</p>
               </div>
 
-              <div className="relative w-full sm:w-64">
-                <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Filter suppliers by name or category..."
-                  className="w-full pl-8 pr-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none focus:border-indigo-500"
-                />
+              <div className="flex items-center space-x-2 w-full sm:w-auto">
+                <div className="relative flex-1 sm:w-64">
+                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Filter suppliers by name or category..."
+                    className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-red-500 focus:bg-white"
+                  />
+                </div>
+                <button
+                  onClick={() => setIsAddCompanyOpen(true)}
+                  className="px-3.5 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold flex items-center space-x-1 shadow-xs whitespace-nowrap"
+                >
+                  <UserPlus className="w-3.5 h-3.5" />
+                  <span>+ Add Company</span>
+                </button>
               </div>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-slate-900/60 border-b border-slate-700/60 text-slate-400 uppercase font-semibold">
+                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase font-bold text-[11px]">
                     <th className="py-3 px-4">Supplier Company</th>
                     <th className="py-3 px-4">Category</th>
                     <th className="py-3 px-4">Current Rating Tier</th>
@@ -396,33 +426,33 @@ const BuyerPage = () => {
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-700/50 text-slate-200">
+                <tbody className="divide-y divide-slate-100 text-slate-700">
                   {vendors
                     .filter((v) =>
                       v.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
                       v.category.toLowerCase().includes(searchQuery.toLowerCase())
                     )
                     .map((vendor) => (
-                      <tr key={vendor._id} className="hover:bg-slate-700/30 transition-colors">
-                        <td className="py-3.5 px-4 font-bold text-white">{vendor.companyName}</td>
-                        <td className="py-3.5 px-4 text-slate-300">{vendor.category}</td>
+                      <tr key={vendor._id} className="hover:bg-red-50/20 transition-colors">
+                        <td className="py-3.5 px-4 font-bold text-slate-900">{vendor.companyName}</td>
+                        <td className="py-3.5 px-4 text-slate-600">{vendor.category}</td>
                         <td className="py-3.5 px-4">
                           <TierBadge tier={vendor.ratingTier || 'Approved'} />
                         </td>
-                        <td className="py-3.5 px-4 font-mono font-bold text-indigo-400">
-                          {vendor.overallRating ? vendor.overallRating.toFixed(1) : 'Unrated'} / 5.0
+                        <td className="py-3.5 px-4 font-mono font-bold text-red-600">
+                          {vendor.overallRating ? vendor.overallRating.toFixed(1) : '5.0'} / 5.0
                         </td>
                         <td className="py-3.5 px-4 text-right">
                           <div className="flex items-center justify-end space-x-2">
                             <button
                               onClick={() => handleViewScorecard(vendor)}
-                              className="px-2.5 py-1 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded font-semibold text-xs"
+                              className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded font-bold text-xs border border-slate-200"
                             >
                               Scorecard
                             </button>
                             <button
                               onClick={() => handleStartEvaluate(vendor)}
-                              className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded font-semibold text-xs flex items-center space-x-1"
+                              className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold text-xs flex items-center space-x-1 shadow-xs"
                             >
                               <Star className="w-3 h-3" />
                               <span>Evaluate Vendor</span>
@@ -460,6 +490,15 @@ const BuyerPage = () => {
           />
         </div>
       )}
+
+      {/* Add Company Modal */}
+      <AddCompanyModal
+        isOpen={isAddCompanyOpen}
+        onClose={() => setIsAddCompanyOpen(false)}
+        onCompanyAdded={() => {
+          dispatch(fetchVendors());
+        }}
+      />
     </div>
   );
 };
