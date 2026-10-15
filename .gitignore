@@ -1,14 +1,15 @@
 # Dependencies
 node_modules/
+**/node_modules/
 /.pnp
 .pnp.js
 
 # Environment Variables
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+server/.env
+client/.env
 
 # Logs
 npm-debug.log*
@@ -19,8 +20,18 @@ lerna-debug.log*
 
 # Production build outputs
 dist/
+**/dist/
 build/
+**/build/
 out/
+.vercel/
+
+# Python cache & temp
+__pycache__/
+*.pyc
+
+# Large archives
+*.zip
 
 # Editor and OS
 .DS_Store

@@ -14,6 +14,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { getAssetUrl } from '../api/axiosClient';
+import CompanyLogo from './CompanyLogo';
 
 const PendingVendorsQueue = ({ vendors, onStatusChange }) => {
   const dispatch = useDispatch();
@@ -100,8 +101,13 @@ const PendingVendorsQueue = ({ vendors, onStatusChange }) => {
                   return (
                     <tr key={vendor._id} className="hover:bg-slate-50 transition-colors">
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-slate-900 text-sm">{vendor.companyName}</div>
-                        <div className="text-[11px] text-slate-500">{vendor.contactEmail}</div>
+                        <div className="flex items-center space-x-3">
+                          <CompanyLogo name={vendor.companyName} size="sm" />
+                          <div>
+                            <div className="font-bold text-slate-900 text-sm">{vendor.companyName}</div>
+                            <div className="text-[11px] text-slate-500">{vendor.contactEmail}</div>
+                          </div>
+                        </div>
                       </td>
                       <td className="py-3.5 px-4">
                         <span className="px-2.5 py-1 rounded-lg bg-slate-100 border border-slate-200 text-slate-700 font-medium">

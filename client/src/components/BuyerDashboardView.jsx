@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchBuyerDashboard } from '../store/slices/dashboardSlice';
 import TierBadge from './TierBadge';
 import AddCompanyModal from './AddCompanyModal';
+import CompanyLogo from './CompanyLogo';
 import {
   ShoppingBag,
   TrendingUp,
@@ -315,14 +316,17 @@ const BuyerDashboardView = ({ onStartDraftPO, onStartEvaluate, onNavigateTab }) 
                 className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 hover:border-red-300 hover:bg-red-50/20 transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="font-bold text-slate-900 text-xs truncate max-w-[160px]">
-                      {vendor.companyName}
-                    </span>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2 min-w-0 pr-1">
+                      <CompanyLogo name={vendor.companyName} size="sm" />
+                      <span className="font-bold text-slate-900 text-xs truncate max-w-[140px]">
+                        {vendor.companyName}
+                      </span>
+                    </div>
                     <TierBadge tier={vendor.ratingTier || 'Approved'} />
                   </div>
                   <div className="text-[11px] text-slate-500">
-                    {vendor.category} • Score: {vendor.complianceScore}%
+                    {vendor.category} • Compliance: {vendor.complianceScore}%
                   </div>
                 </div>
 

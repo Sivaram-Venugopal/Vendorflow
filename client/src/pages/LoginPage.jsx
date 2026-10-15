@@ -9,11 +9,9 @@ import {
   Mail, 
   AlertCircle, 
   Loader2, 
-  ShieldCheck, 
-  ShoppingBag, 
-  Truck, 
   CheckCircle2 
 } from 'lucide-react';
+import { VendorFlowLogoIcon } from '../components/VendorFlowLogo';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -77,21 +75,17 @@ const LoginPage = () => {
     dispatch(login(formData));
   };
 
-  const handleQuickLogin = (email, pass) => {
-    setFormData({ email, password: pass });
-    setValidationErrors({});
-    dispatch(login({ email, password: pass }));
-  };
-
   const isLoading = status === 'loading';
 
   return (
     <div className="max-w-xl mx-auto mt-4 mb-10">
       {/* VendorFlow Header */}
       <div className="text-center mb-6">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold mb-3 shadow-xs">
-          <Building2 className="w-3.5 h-3.5 text-red-600" />
-          <span>VendorFlow Procurement Network</span>
+        <div className="flex justify-center mb-3">
+          <VendorFlowLogoIcon className="w-12 h-12" />
+        </div>
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold mb-2 shadow-xs">
+          <span>VendorFlow Enterprise Procurement Portal</span>
         </div>
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Enterprise Sign In</h1>
         <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
@@ -111,83 +105,7 @@ const LoginPage = () => {
             </div>
           )}
 
-          {/* Quick 1-Click Role Accounts */}
-          <div className="mb-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                Select an Authorized Role
-              </span>
-              <span className="text-[11px] text-red-600 font-bold">1-Click Direct Access</span>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              <button
-                type="button"
-                disabled={isLoading}
-                onClick={() => handleQuickLogin('admin@vendorflow.io', 'Password123!')}
-                className="group p-3.5 rounded-xl bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-red-300 transition-all text-left flex flex-col justify-between shadow-xs"
-              >
-                <div>
-                  <div className="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                    <ShieldCheck className="w-4 h-4" />
-                  </div>
-                  <div className="text-xs font-bold text-slate-900">Administrator</div>
-                  <div className="text-[11px] text-slate-500 truncate mt-0.5">Admin & Approvals</div>
-                </div>
-                <div className="mt-2 text-[10px] font-bold text-red-600 flex items-center">
-                  <span>Sign In</span>
-                  <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </div>
-              </button>
 
-              <button
-                type="button"
-                disabled={isLoading}
-                onClick={() => handleQuickLogin('buyer@vendorflow.io', 'Password123!')}
-                className="group p-3.5 rounded-xl bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-red-300 transition-all text-left flex flex-col justify-between shadow-xs"
-              >
-                <div>
-                  <div className="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                    <ShoppingBag className="w-4 h-4" />
-                  </div>
-                  <div className="text-xs font-bold text-slate-900">Buyer Desk</div>
-                  <div className="text-[11px] text-slate-500 truncate mt-0.5">Procurement & POs</div>
-                </div>
-                <div className="mt-2 text-[10px] font-bold text-red-600 flex items-center">
-                  <span>Sign In</span>
-                  <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                disabled={isLoading}
-                onClick={() => handleQuickLogin('vendor.apex@example.com', 'Password123!')}
-                className="group p-3.5 rounded-xl bg-slate-50 hover:bg-red-50/60 border border-slate-200 hover:border-red-300 transition-all text-left flex flex-col justify-between shadow-xs"
-              >
-                <div>
-                  <div className="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-                    <Truck className="w-4 h-4" />
-                  </div>
-                  <div className="text-xs font-bold text-slate-900">Supplier Hub</div>
-                  <div className="text-[11px] text-slate-500 truncate mt-0.5">Apex Supplies</div>
-                </div>
-                <div className="mt-2 text-[10px] font-bold text-red-600 flex items-center">
-                  <span>Sign In</span>
-                  <span className="ml-1 opacity-0 group-hover:opacity-100 transition-opacity">→</span>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <div className="relative my-6 text-center">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200" />
-            </div>
-            <span className="relative bg-white px-3 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-              Or sign in with custom credentials
-            </span>
-          </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

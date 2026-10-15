@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout, logoutImmediate, login } from '../store/slices/authSlice';
-import ApiHealthIndicator from '../components/ApiHealthIndicator';
+import { logout, logoutImmediate } from '../store/slices/authSlice';
 import NotificationCenter from '../components/NotificationCenter';
+import VendorFlowBrand from '../components/VendorFlowLogo';
 import {
-  Building2,
   ShieldCheck,
   ShoppingBag,
   Truck,
@@ -16,12 +15,7 @@ import {
   Search,
   ChevronDown,
   CheckCircle2,
-  ExternalLink,
-  Sparkles,
-  ArrowRight,
-  Shield,
-  Layers,
-  HelpCircle
+  Shield
 } from 'lucide-react';
 
 const BaseLayout = () => {
@@ -32,7 +26,6 @@ const BaseLayout = () => {
 
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [isSwitchingRole, setIsSwitchingRole] = useState(false);
   const accountMenuRef = useRef(null);
 
   // Close account menu on outside click
@@ -55,35 +48,6 @@ const BaseLayout = () => {
       console.warn('Backend logout warning:', e);
     }
     navigate('/login', { replace: true });
-  };
-
-  const handleSwitchRole = async (targetRole) => {
-    setAccountMenuOpen(false);
-    setIsSwitchingRole(true);
-    const credentialsMap = {
-      Admin: { email: 'admin@vendorflow.io', password: 'Password123!' },
-      Buyer: { email: 'buyer@vendorflow.io', password: 'Password123!' },
-      Vendor: { email: 'vendor.apex@example.com', password: 'Password123!' },
-    };
-
-    const creds = credentialsMap[targetRole];
-    if (creds) {
-      try {
-        await dispatch(logout()).unwrap().catch(() => {});
-        dispatch(logoutImmediate());
-        await dispatch(login(creds)).unwrap();
-        const roleHome = {
-          Admin: '/admin',
-          Buyer: '/buyer',
-          Vendor: '/vendor',
-        }[targetRole];
-        navigate(roleHome, { replace: true });
-      } catch (err) {
-        console.error('Failed to switch role:', err);
-      } finally {
-        setIsSwitchingRole(false);
-      }
-    }
   };
 
   const portals = [
@@ -118,27 +82,12 @@ const BaseLayout = () => {
       {/* Top Header - White & Red Corporate Theme */}
       <header className="h-16 border-b border-slate-200 bg-white/95 backdrop-blur-md px-6 flex items-center justify-between sticky top-1.5 z-40 shadow-sm">
         {/* Brand Logo & Name: VendorFlow */}
-        <div className="flex items-center space-x-3.5">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-red-600 via-rose-600 to-red-700 flex items-center justify-center shadow-md shadow-red-600/25 border border-red-500/20 text-white">
-            <Building2 className="w-5 h-5" />
-          </div>
-          <div className="flex flex-col">
-            <div className="flex items-center space-x-2">
-              <span className="font-extrabold text-lg tracking-tight text-slate-900">
-                Vendor<span className="text-red-600">Flow</span>
-              </span>
-              <span className="hidden sm:inline-block text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200">
-                Enterprise Procurement
-              </span>
-            </div>
-            <span className="text-[11px] text-slate-500 hidden sm:block font-medium">
-              Enterprise Supplier Network & Procurement Lifecycle
-            </span>
-          </div>
-        </div>
+        <NavLink to="/" className="hover:opacity-95 transition-opacity">
+          <VendorFlowBrand />
+        </NavLink>
 
         {/* Global Search Bar */}
-        <div className="hidden md:flex items-center flex-1 max-w-md mx-8">
+        <div className="hidden md:flex items-center flex-1 max-w-xs xl:max-w-md mx-4 lg:mx-8">
           <div className="w-full relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-2.5" />
             <input
@@ -156,7 +105,6 @@ const BaseLayout = () => {
 
         {/* Header Right Actions */}
         <div className="flex items-center space-x-3">
-          <ApiHealthIndicator />
           <NotificationCenter />
 
           {/* User Account / Profile Button */}
@@ -199,67 +147,7 @@ const BaseLayout = () => {
                     </div>
                   </div>
 
-                  {/* Quick Role Switcher Inside Profile Menu */}
-                  <div className="p-3 bg-white">
-                    <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wider px-2 mb-2">
-                      Switch Active Session Role
-                    </div>
-                    <div className="space-y-1">
-                      <button
-                        onClick={() => handleSwitchRole('Admin')}
-                        disabled={user.role === 'Admin' || isSwitchingRole}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors ${
-                          user.role === 'Admin'
-                            ? 'bg-red-50 text-red-700 font-bold border border-red-200'
-                            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <ShieldCheck className="w-4 h-4 text-red-600" />
-                          <span>Administrator</span>
-                        </div>
-                        {user.role === 'Admin' && (
-                          <span className="text-[10px] font-bold text-red-600">Current</span>
-                        )}
-                      </button>
 
-                      <button
-                        onClick={() => handleSwitchRole('Buyer')}
-                        disabled={user.role === 'Buyer' || isSwitchingRole}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors ${
-                          user.role === 'Buyer'
-                            ? 'bg-red-50 text-red-700 font-bold border border-red-200'
-                            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <ShoppingBag className="w-4 h-4 text-red-600" />
-                          <span>Procurement Buyer</span>
-                        </div>
-                        {user.role === 'Buyer' && (
-                          <span className="text-[10px] font-bold text-red-600">Current</span>
-                        )}
-                      </button>
-
-                      <button
-                        onClick={() => handleSwitchRole('Vendor')}
-                        disabled={user.role === 'Vendor' || isSwitchingRole}
-                        className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs transition-colors ${
-                          user.role === 'Vendor'
-                            ? 'bg-red-50 text-red-700 font-bold border border-red-200'
-                            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
-                        }`}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <Truck className="w-4 h-4 text-red-600" />
-                          <span>Apex Supplies (Vendor)</span>
-                        </div>
-                        {user.role === 'Vendor' && (
-                          <span className="text-[10px] font-bold text-red-600">Current</span>
-                        )}
-                      </button>
-                    </div>
-                  </div>
 
                   {/* Sign Out Button */}
                   <div className="p-3 border-t border-slate-100 bg-slate-50/50">
@@ -340,57 +228,6 @@ const BaseLayout = () => {
                   );
                 })}
               </nav>
-            </div>
-
-            {/* Quick Demo Role Switcher */}
-            <div className="p-3 bg-red-50/40 rounded-2xl border border-red-100">
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] font-bold text-red-800 uppercase tracking-wider flex items-center space-x-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-red-600" />
-                  <span>Instant Role Switch</span>
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-500 mb-2.5">
-                Switch between enterprise roles without re-typing passwords:
-              </p>
-              <div className="grid grid-cols-3 gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => handleSwitchRole('Admin')}
-                  disabled={user?.role === 'Admin' || isSwitchingRole}
-                  className={`px-2 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
-                    user?.role === 'Admin'
-                      ? 'bg-red-600 text-white shadow-xs'
-                      : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
-                  }`}
-                >
-                  Admin
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSwitchRole('Buyer')}
-                  disabled={user?.role === 'Buyer' || isSwitchingRole}
-                  className={`px-2 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
-                    user?.role === 'Buyer'
-                      ? 'bg-red-600 text-white shadow-xs'
-                      : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
-                  }`}
-                >
-                  Buyer
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSwitchRole('Vendor')}
-                  disabled={user?.role === 'Vendor' || isSwitchingRole}
-                  className={`px-2 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
-                    user?.role === 'Vendor'
-                      ? 'bg-red-600 text-white shadow-xs'
-                      : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
-                  }`}
-                >
-                  Vendor
-                </button>
-              </div>
             </div>
 
             {/* Procurement Standards */}

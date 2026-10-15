@@ -11,6 +11,7 @@ import VendorScorecardView from '../components/VendorScorecardView';
 import TierBadge from '../components/TierBadge';
 import BuyerDashboardView from '../components/BuyerDashboardView';
 import AddCompanyModal from '../components/AddCompanyModal';
+import MetalMarketOptimizer from '../components/MetalMarketOptimizer';
 import { 
   LayoutDashboard,
   ShoppingBag, 
@@ -26,7 +27,8 @@ import {
   TrendingUp,
   UserPlus,
   Building2,
-  CheckCircle2
+  CheckCircle2,
+  Zap
 } from 'lucide-react';
 
 const BuyerPage = () => {
@@ -117,7 +119,7 @@ const BuyerPage = () => {
 
         <div className="flex flex-wrap items-center gap-2.5">
           {/* Main Top Tab Switcher */}
-          {(activeTab === 'dashboard' || activeTab === 'pos' || activeTab === 'evaluations') && (
+          {(activeTab === 'dashboard' || activeTab === 'pos' || activeTab === 'evaluations' || activeTab === 'raw-materials') && (
             <div className="flex items-center bg-white p-1 rounded-xl border border-slate-200 shadow-xs">
               <button
                 onClick={() => setActiveTab('dashboard')}
@@ -145,6 +147,16 @@ const BuyerPage = () => {
               >
                 <Award className="w-3.5 h-3.5" />
                 <span>Suppliers</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('raw-materials')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-1.5 ${
+                  activeTab === 'raw-materials' ? 'bg-red-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+                title="Live Metal Prices & AI Charge Mix Optimizer (NowPurchase Engine)"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-500" />
+                <span>Spot Index & AI Mix</span>
               </button>
             </div>
           )}
@@ -208,6 +220,15 @@ const BuyerPage = () => {
             setActiveTab('new-evaluation');
           }}
           onNavigateTab={(tab) => setActiveTab(tab)}
+        />
+      )}
+
+      {/* RAW MATERIAL SPOT INDEX & AI CHARGE-MIX OPTIMIZER (NowPurchase Engine) */}
+      {activeTab === 'raw-materials' && (
+        <MetalMarketOptimizer 
+          onPreFillPO={(prefilled) => {
+            setActiveTab('new-po');
+          }}
         />
       )}
 

@@ -18,8 +18,10 @@ import {
   Archive, 
   FileText,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Printer
 } from 'lucide-react';
+import POPrintModal from './POPrintModal';
 
 const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
   const dispatch = useDispatch();
@@ -31,6 +33,7 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
   const [remarks, setRemarks] = useState('');
   const [updating, setUpdating] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState(false);
 
   if (!po) return null;
 
@@ -90,14 +93,25 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
           <p className="text-sm text-slate-600 mt-1 font-semibold">{po.title}</p>
         </div>
 
-        {/* Total Cost Card */}
-        <div className="text-right bg-slate-50 p-4 rounded-xl border border-slate-200">
-          <div className="text-[10px] uppercase font-bold text-slate-500">Total Purchase Value</div>
-          <div className="text-2xl font-black text-emerald-600 font-mono">
-            {po.totalAmount?.toLocaleString()} {po.currency}
-          </div>
-          <div className="text-[11px] text-slate-500 font-medium">
-            Subtotal: {po.subtotal?.toLocaleString()} + GST (18%): {po.taxAmount?.toLocaleString()}
+        {/* Action Controls & Total Cost */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setIsPrintModalOpen(true)}
+            className="px-4 py-2.5 bg-slate-900 hover:bg-black text-white rounded-xl text-xs font-bold flex items-center space-x-2 shadow-sm transition-all"
+            title="Generate and Print Official Purchase Order Document"
+          >
+            <Printer className="w-4 h-4 text-red-400" />
+            <span>Print / PDF Document</span>
+          </button>
+
+          <div className="text-right bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <div className="text-[10px] uppercase font-bold text-slate-500">Total Purchase Value</div>
+            <div className="text-2xl font-black text-emerald-600 font-mono">
+              {po.totalAmount?.toLocaleString()} {po.currency}
+            </div>
+            <div className="text-[11px] text-slate-500 font-medium">
+              Subtotal: {po.subtotal?.toLocaleString()} + GST (18%): {po.taxAmount?.toLocaleString()}
+            </div>
           </div>
         </div>
       </div>
@@ -266,6 +280,13 @@ const PODetailView = ({ po: initialPO, onBack, onStatusUpdated }) => {
           </table>
         </div>
       </div>
+
+      {/* Printable Purchase Order Modal */}
+      <POPrintModal 
+        isOpen={isPrintModalOpen} 
+        onClose={() => setIsPrintModalOpen(false)} 
+        po={po} 
+      />
     </div>
   );
 };

@@ -1,0 +1,1453 @@
+<USER_REQUEST>
+\PassOptionsToPackage{unicode}{hyperref}
+    \PassOptionsToPackage{hyphens}{url}
+    \documentclass{article}
+    \usepackage{xcolor}
+    \usepackage{amsmath,amssymb}
+    \setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+    \usepackage{iftex}
+    \ifPDFTeX
+      \usepackage[T1]{fontenc}
+      \usepackage[utf8]{inputenc}
+      \usepackage{textcomp}
+    \else
+      \usepackage{unicode-math}
+      \defaultfontfeatures{Scale=MatchLowercase}
+      \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+    \fi
+    \usepackage{lmodern}
+
+    \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+    \IfFileExists{microtype.sty}{
+      \usepackage[]{microtype}
+      \UseMicrotypeSet[protrusion]{basicmath}
+    }{}
+
+    \makeatletter
+    \@ifundefined{KOMAClassName}{
+      \IfFileExists{parskip.sty}{
+        \usepackage{parskip}
+      }{
+        \setlength{\parindent}{0pt}
+        \setlength{\parskip}{6pt plus 2pt minus 1pt}
+      }
+    }{
+      \KOMAoptions{parskip=half}
+    }
+    \makeatother
+
+    \usepackage{graphicx}
+    \graphicspath{{./}{images/}{media/images/}{media/}}
+
+    \def\fps@figure{htbp}
+    \setlength{\emergencystretch}{3em}
+    \providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \usepackage{bookmark}
+    \IfFileExists{xurl.sty}{\usepackage{xurl}}{}
+    \urlstyle{same}
+    \hypersetup{
+      hidelinks,
+      pdfcreator={LaTeX via pandoc}}
+
+    \newcommand{\rupee}{INR~}
+
+    \author{}
+    \date{}
+
+    \begin{document}
+
+    % ==============================================================================
+    % PAGE 1: COVER PAGE / TITLE PAGE (FITS 100% ON A SINGLE PAGE)
+    % ==============================================================================
+    \begin{titlepage}
+    \begin{center}
+        \vspace*{-0.5cm}
+
+        {\fontsize{14pt}{17pt}\selectfont \textbf{VENDORFLOW: AN ENTERPRISE MERN-STACK PROCUREMENT AND SUPPLIER
+  LIFECYCLE MANAGEMENT SYSTEM}\par}
+
+        \vspace{0.7cm}
+
+        {\fontsize{12pt}{15pt}\selectfont \textbf{A PROJECT REPORT}\par}
+
+        \vspace{0.5cm}
+
+        {\fontsize{10.5pt}{13pt}\selectfont \textit{Submitted by}\par}
+
+        \vspace{0.3cm}
+
+        {\fontsize{12pt}{15pt}\selectfont \textbf{SIVARAM VENUGOPAL (310624205263)}\par}
+
+        \vspace{0.7cm}
+
+        {\fontsize{10.5pt}{13pt}\selectfont \textit{in partial fulfillment for the award of the degree}\par}
+        \vspace{0.1cm}
+        {\fontsize{10.5pt}{13pt}\selectfont \textit{of}\par}
+        \vspace{0.2cm}
+        {\fontsize{12pt}{15pt}\selectfont \textbf{BACHELOR OF TECHNOLOGY}\par}
+        \vspace{0.1cm}
+        {\fontsize{10.5pt}{13pt}\selectfont \textit{in}\par}
+        \vspace{0.2cm}
+        {\fontsize{12pt}{15pt}\selectfont \textbf{INFORMATION TECHNOLOGY}\par}
+
+        \vspace{0.6cm}
+
+        % College Logo scaled appropriately to fit page 1
+        \IfFileExists{./media/image1.jpg}{
+            \includegraphics[width=2.1in]{./media/image1.jpg}\par
+        }{
+            \IfFileExists{college_logo.png}{
+                \includegraphics[width=2.6cm]{college_logo.png}\par
+            }{
+                \vspace{1.8cm}
+            }
+        }
+
+        \vspace{0.5cm}
+
+        {\fontsize{12pt}{15pt}\selectfont \textbf{EASWARI ENGINEERING COLLEGE, CHENNAI}\par}
+        \vspace{0.1cm}
+        {\fontsize{9.5pt}{12pt}\selectfont \textbf{(AN AUTONOMOUS INSTITUTION) -- AFFILIATED TO ANNA UNIVERSITY,
+  CHENNAI}\par}
+
+        \vspace{0.6cm}
+
+        {\fontsize{11pt}{14pt}\selectfont \textbf{OCTOBER 2026}\par}
+
+    \end{center}
+    \end{titlepage}
+
+    % ==============================================================================
+    % PAGE 2: INTENTIONALLY BLANK PAGE (AS IN OOSEREPORT.PDF)
+    % ==============================================================================
+    \newpage
+    \thispagestyle{empty}
+    \mbox{}
+    \newpage
+
+    % ==============================================================================
+    % PAGE 3: BONAFIDE CERTIFICATE
+    % ==============================================================================
+    \thispagestyle{empty}
+    \begin{center}
+        \IfFileExists{./media/image2.jpg}{
+            \includegraphics[width=2.2in]{./media/image2.jpg}\par
+            \vspace{0.2cm}
+        }{}
+        {\Large \textbf{EASWARI ENGINEERING COLLEGE}}\\[0.12cm]
+        {\normalsize \textbf{(AN AUTONOMOUS INSTITUTION) -- AFFILIATED TO ANNA UNIVERSITY}}\\[0.08cm]
+        {\small \textbf{RAMAPURAM, CHENNAI -- 600 089}}\\[0.6cm]
+
+        {\large \textbf{BONAFIDE CERTIFICATE}}\\[0.6cm]
+    \end{center}
+
+    \noindent Certified that this project report titled \textbf{``VENDORFLOW: AN ENTERPRISE MERN-STACK PROCUREMENT AND
+  SUPPLIER LIFECYCLE MANAGEMENT SYSTEM''} is the bonafide work of \textbf{``SIVARAM VENUGOPAL (310624205263)''}, who
+  carried out the project under my supervision.\\[2.2cm]
+
+    \noindent
+    \begin{tabular}{@{}p{0.48\textwidth} p{0.48\textwidth}@{}}
+    \textbf{SIGNATURE} & \textbf{SIGNATURE} \\[1.6cm]
+    \textbf{Ms. SAI LAKSHMI GRANDHI} & \textbf{Dr. N. ANANTHI, M.E., Ph.D.} \\
+    SUPERVISOR & HEAD OF THE DEPARTMENT \\
+    Assistant Professor & Professor \& Head \\
+    Department of Information Technology & Department of Information Technology \\
+    Easwari Engineering College & Easwari Engineering College \\
+    Ramapuram, Chennai -- 600 089. & Ramapuram, Chennai -- 600 089.
+    \end{tabular}
+
+    % ==============================================================================
+    % PAGE 4: CERTIFICATE OF VIVA-VOCE EXAMINATION
+    % ==============================================================================
+    \newpage
+    \thispagestyle{empty}
+    \begin{center}
+        \IfFileExists{./media/image3.jpg}{
+            \includegraphics[width=2.2in]{./media/image3.jpg}\par
+            \vspace{0.2cm}
+        }{}
+        {\Large \textbf{EASWARI ENGINEERING COLLEGE}}\\[0.12cm]
+        {\normalsize \textbf{(AN AUTONOMOUS INSTITUTION) -- AFFILIATED TO ANNA UNIVERSITY}}\\[0.08cm]
+        {\small \textbf{RAMAPURAM, CHENNAI -- 600 089}}\\[0.6cm]
+
+        {\large \textbf{Certificate of Viva-voce Examination}}\\[0.6cm]
+    \end{center}
+
+    \noindent This is to certify that the Viva-Voce Examination of the Project Work entitled \textbf{``VENDORFLOW: AN
+  ENTERPRISE MERN-STACK PROCUREMENT AND SUPPLIER LIFECYCLE MANAGEMENT SYSTEM''} submitted by \textbf{SIVARAM VENUGOPAL
+  (310624205263)} in partial fulfillment of the requirements for the award of the degree of \textbf{Bachelor of
+  Technology in Information Technology} was conducted on \underline{\hspace{2.5cm}} in the Department of Information
+  Technology, Easwari Engineering College, Ramapuram -- Chennai.\\[2.2cm]
+
+    \noindent
+    \begin{tabular}{@{}p{0.48\textwidth} p{0.48\textwidth}@{}}
+    \textbf{INTERNAL EXAMINER} & \textbf{EXTERNAL EXAMINER} \\[0.35cm]
+    NAME: \underline{\hspace{3.8cm}} & NAME: \underline{\hspace{3.8cm}} \\
+    (in capital letters) & (in capital letters) \\[0.35cm]
+    Designation: \underline{\hspace{3.0cm}} & Designation: \underline{\hspace{3.0cm}} \\[0.35cm]
+    Address: \underline{\hspace{3.6cm}} & Address: \underline{\hspace{3.6cm}} \\[0.35cm]
+    Date: \underline{\hspace{4.0cm}} & Date: \underline{\hspace{4.0cm}}
+    \end{tabular}
+
+    % ==============================================================================
+    % ABSTRACT
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{ABSTRACT}}
+    \end{center}
+
+    \vspace{0.3cm}
+    In modern enterprise environments, supply chain operations often face severe delays due to fragmented record-
+  keeping, unverified vendor credentials, off-contract spending, and subjective supplier reviews. Traditional
+  procurement methods rely heavily on manual spreadsheets, unstructured email exchanges, and paper-based tracking.
+  These practices lack real-time visibility, create compliance risks under tax regulations such as GST, and introduce
+  coordination errors between buyers and external suppliers.
+
+    To resolve these challenges, this project presents VendorFlow, an end-to-end procurement and supplier lifecycle
+  management system built on the MERN stack (MongoDB, Express.js, React, Node.js). VendorFlow establishes a
+  centralized platform with role-based access for three distinct users: Administrators, Procurement Buyers, and
+  Vendors. Administrators manage supplier onboarding, inspect tax credentials like PAN and GSTIN, and approve high-
+  value orders. Buyers draft purchase orders, calculate taxes, and evaluate vendor performance. Vendors receive
+  incoming orders, track order fulfillment, and submit commercial invoices.
+
+    A key feature of the system is a deterministic Finite State Machine that manages the purchase order lifecycle
+  across sequential stages from draft creation to final closure. Each stage requires proper authorization, line-item
+  verification, and automated 18 percent GST calculation. In addition, the platform includes a quantitative vendor
+  evaluation module that scores suppliers across delivery timeliness, product quality, pricing, and customer support.
+  Based on these scores, vendors are classified into performance tiers such as Preferred, Approved, On-Watch, or
+  Blacklisted to help organizations make data-driven purchasing decisions.
+
+    Security is maintained through JSON Web Token authentication stored in secure cookies, role-gated API endpoints,
+  and an append-only audit trail that logs sensitive actions. VendorFlow provides an efficient, transparent, and
+  structured procurement workflow that reduces manual effort, prevents unauthorized purchases, and improves supply
+  chain reliability.
+
+    % ==============================================================================
+    % ACKNOWLEDGEMENT
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{ACKNOWLEDGEMENT}}
+    \end{center}
+
+    \vspace{0.4cm}
+    We express our sincere gratitude to our respected Principal \textbf{Dr. P. Deiva Sundari} and the Management of
+  Easwari Engineering College for providing us with the opportunity and facilities to carry out this project work.
+
+    We convey our heartfelt thanks to \textbf{Dr. N. Ananthi, M.E., Ph.D.}, Head of the Department, Department of
+  \textbf{Information Technology}, for her continuous encouragement, administrative support, and motivation.
+
+    We are extremely thankful and deeply indebted to our Project Supervisor, \textbf{MS . Sai Lakshmi Grandhi},
+  Assistant Professor, Department of Information Technology, for her valuable guidance, constructive technical
+  suggestions, and patient mentoring throughout the course of this project.
+
+    We also extend our sincere appreciation to all the teaching and non-teaching faculty members of the Department of
+  Information Technology for their generous cooperation and assistance.
+
+    Finally, we express our profound gratitude to our parents, family members, and friends for their constant
+  encouragement, moral support, and blessings throughout the completion of this work.
+
+    % ==============================================================================
+    % TABLE OF CONTENTS (STRUCTURED MATCHING OOSEREPORT.PDF)
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{TABLE OF CONTENTS}}
+    \end{center}
+
+    \vspace{0.5cm}
+    \noindent \textbf{CHAPTER NO.} \hfill \textbf{TITLE} \hfill \textbf{PAGE NO.}
+
+    \vspace{0.3cm}
+    \noindent \textbf{ABSTRACT} \dotfill \textbf{vi}
+
+    \vspace{0.25cm}
+    \noindent \textbf{1 \hspace{0.2cm} INTRODUCTION} \dotfill \textbf{1}
+    \begin{itemize}\tightlist
+        \item[] 1.1 \hspace{0.2cm} OVERVIEW \dotfill 1
+        \item[] 1.2 \hspace{0.2cm} PROBLEM DEFINITION \dotfill 1
+        \item[] 1.3 \hspace{0.2cm} OBJECTIVE \dotfill 2
+        \item[] 1.4 \hspace{0.2cm} SCOPE OF THE PROJECT \dotfill 3
+        \item[] 1.5 \hspace{0.2cm} MOTIVATION \dotfill 4
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{2 \hspace{0.2cm} RELATED WORK} \dotfill \textbf{6}
+    \begin{itemize}\tightlist
+        \item[] 2.1 \hspace{0.2cm} LITERATURE REVIEW \dotfill 6
+        \item[] 2.2 \hspace{0.2cm} EXISTING SYSTEM \dotfill 7
+        \item[] 2.3 \hspace{0.2cm} PROPOSED SYSTEM \dotfill 8
+        \item[] 2.4 \hspace{0.2cm} SUMMARY \dotfill 9
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{3 \hspace{0.2cm} SYSTEM ANALYSIS} \dotfill \textbf{10}
+    \begin{itemize}\tightlist
+        \item[] 3.1 \hspace{0.2cm} SYSTEM REQUIREMENTS \dotfill 10
+        \item[] \hspace{0.4cm} 3.1.1 \hspace{0.15cm} Functional Requirements \dotfill 10
+        \item[] \hspace{0.4cm} 3.1.2 \hspace{0.15cm} Non-Functional Requirements \dotfill 11
+        \item[] 3.2 \hspace{0.2cm} SOFTWARE AND HARDWARE REQUIREMENTS \dotfill 12
+        \item[] \hspace{0.4cm} 3.2.1 \hspace{0.15cm} Hardware Requirements \dotfill 12
+        \item[] \hspace{0.4cm} 3.2.2 \hspace{0.15cm} Software Requirements \dotfill 13
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{4 \hspace{0.2cm} SYSTEM DESIGN} \dotfill \textbf{14}
+    \begin{itemize}\tightlist
+        \item[] 4.1 \hspace{0.2cm} SYSTEM ARCHITECTURE \dotfill 14
+        \item[] 4.2 \hspace{0.2cm} MODULE DESCRIPTION \dotfill 15
+        \item[] \hspace{0.4cm} 4.2.1 \hspace{0.15cm} Authentication and RBAC \dotfill 15
+        \item[] \hspace{0.4cm} 4.2.2 \hspace{0.15cm} Vendor Onboarding and KYC \dotfill 16
+        \item[] \hspace{0.4cm} 4.2.3 \hspace{0.15cm} Purchase Order Lifecycle FSM \dotfill 16
+        \item[] \hspace{0.4cm} 4.2.4 \hspace{0.15cm} Supplier Evaluation Scorecard \dotfill 17
+        \item[] \hspace{0.4cm} 4.2.5 \hspace{0.15cm} Audit Logging and Notifications \dotfill 17
+        \item[] 4.3 \hspace{0.2cm} CLASS DIAGRAM \dotfill 18
+        \item[] 4.4 \hspace{0.2cm} SEQUENCE DIAGRAM \dotfill 19
+        \item[] 4.5 \hspace{0.2cm} SUMMARY \dotfill 20
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{5 \hspace{0.2cm} SYSTEM IMPLEMENTATION} \dotfill \textbf{21}
+    \begin{itemize}\tightlist
+        \item[] 5.1 \hspace{0.2cm} IMPLEMENTATION ENVIRONMENT \dotfill 21
+        \item[] 5.2 \hspace{0.2cm} CORE IMPLEMENTATION MODULES \dotfill 21
+        \item[] \hspace{0.4cm} 5.2.1 \hspace{0.15cm} Authentication and RBAC Middleware \dotfill 21
+        \item[] \hspace{0.4cm} 5.2.2 \hspace{0.15cm} Purchase Order Data Model \& Tax Engine \dotfill 22
+        \item[] \hspace{0.4cm} 5.2.3 \hspace{0.15cm} Deterministic State Machine Engine \dotfill 23
+        \item[] \hspace{0.4cm} 5.2.4 \hspace{0.15cm} Supplier Scorecard Algorithm \dotfill 24
+        \item[] 5.3 \hspace{0.2cm} FRONTEND USER INTERFACE REALIZATION \dotfill 24
+        \item[] 5.4 \hspace{0.2cm} SUMMARY \dotfill 25
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{6 \hspace{0.2cm} CONCLUSION AND FUTURE ENHANCEMENTS} \dotfill \textbf{26}
+    \begin{itemize}\tightlist
+        \item[] 6.1 \hspace{0.2cm} CONCLUSION \dotfill 26
+        \item[] 6.2 \hspace{0.2cm} CONTRIBUTIONS OF THE PROJECT \dotfill 26
+        \item[] 6.3 \hspace{0.2cm} LIMITATIONS \dotfill 27
+        \item[] 6.4 \hspace{0.2cm} FUTURE ENHANCEMENTS \dotfill 27
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{APPENDIX: SAMPLE CODE IMPLEMENTATION} \dotfill \textbf{28}
+    \begin{itemize}\tightlist
+        \item[] A.1.1 \hspace{0.15cm} FSM State Machine Controller \dotfill 28
+        \item[] A.1.2 \hspace{0.15cm} Supplier Evaluation Engine \dotfill 29
+        \item[] A.1.3 \hspace{0.15cm} Automated Notification Service \dotfill 30
+    \end{itemize}
+
+    \vspace{0.2cm}
+    \noindent \textbf{REFERENCES} \dotfill \textbf{31}
+
+    % ==============================================================================
+    % CHAPTER 1: INTRODUCTION
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{CHAPTER 1}} \\[0.2cm]
+        {\large \textbf{INTRODUCTION}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{1.1 \hspace{0.2cm} OVERVIEW}
+
+    \vspace{0.25cm}
+    In contemporary enterprise ecosystems, the efficient management of procurement and supplier lifecycles represents
+  a critical determinant of operational continuity and financial solvency. While modern organizations have extensively
+  automated customer-facing transactions and sales pipelines, internal procurement operations frequently remain
+  fragmented and technologically neglected. Conventional commercial purchasing workflows, which historically relied on
+  physical paper requisitions, uncoordinated telephonic agreements, or decentralized manual spreadsheets, fail to
+  deliver real-time transparency and transactional certainty. Consequently, this work presents VendorFlow, an
+  automated, enterprise-grade Procurement and Supplier Lifecycle Management System engineered using the MERN (MongoDB,
+  Express.js, React 19, Node.js) technology stack. By synergistically combining a deterministic transactional state
+  machine, automated statutory tax calculations, algorithmic performance evaluations, and role-based access control,
+  the proposed platform transforms chaotic, reactive purchasing routines into a streamlined, high-trust digital
+  utility.
+
+    \vspace{0.4cm}
+    \noindent \textbf{1.2 \hspace{0.2cm} PROBLEM DEFINITION}
+
+    \vspace{0.25cm}
+    Effective enterprise purchasing relies fundamentally upon data accuracy, regulatory verification, and transparent
+  commercial coordination. However, institutions face severe operational challenges during day-to-day procurement due
+  to isolated, manual record-keeping practices that introduce critical delays and financial leakage. When purchasing
+  records are scattered across disconnected spreadsheets, organizations experience frequent duplicate requisitions,
+  discrepancies between invoice values and agreed quotations, and complete loss of transactional auditability.
+
+    Furthermore, manual workflows expose enterprises to significant statutory and financial risks. Verifying supplier
+  Know-Your-Customer (KYC) documentation, including Goods and Services Tax Identification Numbers (GSTIN) and
+  Permanent Account Numbers (PAN), through unstructured email exchanges often leads to missed verifications, invalid
+  tax filings, and denied Input Tax Credits (ITC). Additionally, the absence of an enforced workflow permits unvetted
+  off-contract purchases (maverick spend), while vendor contract renewals continue to rely on subjective anecdotal
+  opinions rather than quantifiable performance records. To resolve these challenges, a centralized, role-gated
+  platform is necessary to eliminate operational friction and ensure corporate governance.
+
+    \vspace{0.4cm}
+    \noindent \textbf{1.3 \hspace{0.2cm} OBJECTIVE}
+
+    \vspace{0.25cm}
+    The primary objective of this project is to research, architect, and develop VendorFlow---a robust, modular
+  procurement management system that guarantees transactional transparency, regulatory compliance, and data-driven
+  supplier oversight. The specific sub-objectives driving this development are outlined as follows:
+
+    \begin{itemize}
+        \item[*] \textbf{Role-Based Authentication Engine:} To implement a secure, Zero-Trust authentication
+  architecture utilizing JSON Web Tokens (JWT) and encrypted \texttt{httpOnly} session cookies, strictly partitioning
+  access privileges across Administrators, Buyers, and Suppliers.
+        \item[*] \textbf{Automated KYC Onboarding Pipeline:} To design a multi-step onboarding workflow that validates
+  statutory business credentials (PAN, GSTIN) and supports multi-file document uploads subjected to administrative
+  review queues.
+        \item[*] \textbf{Deterministic Purchase Order State Machine:} To model and enforce an eight-stage
+  transactional Finite State Machine (FSM) governing order lifecycles (\textit{Draft $\rightarrow$ Pending Approval
+  $\rightarrow$ Approved $\rightarrow$ Sent $\rightarrow$ Acknowledged $\rightarrow$ Delivered $\rightarrow$ Invoiced
+  $\rightarrow$ Closed}), preventing unauthorized state leaps.
+        \item[*] \textbf{Automated Line-Item and Tax Aggregation:} To develop a real-time financial computation
+  routine that automatically aggregates itemized quantities, unit prices, sub-totals, and statutory 18\% GST additions,
+  eliminating manual calculation errors.
+        \item[*] \textbf{Quantitative Vendor Tier Classification:} To engineer a multi-pillar mathematical evaluation
+  model that scores vendors across delivery timeliness, product quality, pricing, and support, autonomously mapping
+  them into operational tiers (\textit{Preferred, Approved, On-Watch, Blacklisted}).
+        \item[*] \textbf{Immutable Audit Trail Architecture:} To construct an append-only logging system that captures
+  user identities, network metadata, and before-and-after state diffs on all critical operational transitions.
+    \end{itemize}
+
+    \vspace{0.4cm}
+    \noindent \textbf{1.4 \hspace{0.2cm} SCOPE OF THE PROJECT}
+
+    \vspace{0.25cm}
+    This project centers on the comprehensive end-to-end development of the VendorFlow framework, integrating full-
+  stack web software engineering with scalable document storage to deliver accurate and actionable procurement
+  management. The scope encompasses several critical operational phases:
+
+    \begin{itemize}
+        \item[*] \textbf{Data Architecture and Storage:} The design and implementation of optimized MongoDB BSON
+  schemas with compound indexing and virtual references to ensure sub-second query retrieval for vendors, purchase
+  orders, evaluations, and audit logs.
+        \item[*] \textbf{Core Workspace Module Development:} The construction of isolated, role-specific interfaces
+  for Administrators (governance, KYC approvals), Procurement Buyers (order drafting, supplier reviews), and Vendors
+  (order acknowledgement, fulfillment, invoicing).
+        \item[*] \textbf{Lifecycle State Machine Execution:} The implementation of strict server-side transition
+  guards and visual timeline steppers that prevent illegal order progressions and display milestone timestamps.
+        \item[*] \textbf{Supplier Evaluation and Analytics:} The creation of dynamic performance graphs, multi-
+  criteria radar visualizations, and categorized budget allocation analytics for strategic procurement planning.
+    \end{itemize}
+
+    \noindent \textit{Boundary Exclusions:} Real-time integration with external banking automated clearing houses
+  (ACH) for direct fund disbursements and hardware-based RFID scanning at physical warehouse receiving docks are
+  excluded from the current scope and scheduled for subsequent releases.
+
+    \vspace{0.4cm}
+    \noindent \textbf{1.5 \hspace{0.2cm} MOTIVATION}
+
+    \vspace{0.25cm}
+    The fundamental motivation driving the development of VendorFlow arises from the direct impact that procurement
+  efficiency exercises on organizational financial health and supply chain resilience. In industrial environments,
+  unexpected delays in acquiring key raw materials or mechanical assemblies directly halt production lines, breach
+  client deliverables, and generate substantial financial penalties. Similarly, procuring goods through unverified
+  vendors possessing invalid tax credentials incurs legal liabilities, penalties, and forfeited tax credits.
+  Establishing a reliable, automated software platform addresses these critical operational vulnerabilities at their
+  source.
+
+    Furthermore, commercial enterprise procurement suites like SAP Ariba or Oracle Cloud Procurement carry exorbitant
+  licensing costs and require lengthy, complex deployment cycles, making them inaccessible to small and medium-sized
+  enterprises. VendorFlow is motivated by the vision of engineering a modern, modular, and accessible alternative
+  using open-source full-stack web technologies. The project provides organizations with enterprise-level governance,
+  tax accuracy, and deterministic order tracking without the overhead of heavy enterprise software packages.
+
+    % ==============================================================================
+    % CHAPTER 2: RELATED WORK
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{CHAPTER 2}} \\[0.2cm]
+        {\large \textbf{RELATED WORK}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{2.1 \hspace{0.2cm} LITERATURE REVIEW}
+
+    \vspace{0.25cm}
+    In the context of modern enterprise software engineering, procurement management demands highly responsive,
+  auditable, and automated decision-support frameworks capable of coordinating multi-tiered supplier networks.
+  Academic literature and foundational textbooks on supply chain management and enterprise architecture emphasize that
+  sustainable procurement requires eliminating manual latency, enforcing formal process models, and establishing
+  quantitative supplier governance.
+
+    Chopra and Meindl (2016), in \textit{Supply Chain Management: Strategy, Planning, and Operation} (Pearson
+  Education), demonstrate that procurement is fundamentally a strategic coordination problem where sourcing decisions
+  directly dictate supply chain surplus. The authors emphasize that information asymmetries between buying
+  institutions and external suppliers introduce severe operational frictions, including distorted order signals (the
+  bullwhip effect), missed delivery schedules, and uncontrolled maverick expenditures. Their theoretical framework
+  proves that automating the purchase requisition cycle and centralizing vendor performance metrics significantly
+  dampens inventory variability and accelerates cycle fulfillment.
+
+    Monczka, Handfield, Giunipero, and Patterson (2020), in \textit{Purchasing and Supply Chain Management} (Cengage
+  Learning), provide a comprehensive examination of the Procure-to-Pay (P2P) process. They establish that manual,
+  paper-dependent procurement systems suffer from systematic points of failure, primarily due to the lack of
+  procedural verification at the requisition stage and unmonitored vendor onboarding. Monczka et al.\ emphasize the
+  absolute necessity of structured vendor rating models, arguing that supplier evaluation must rely on multi-criteria
+  quantitative weights rather than periodic subjective assessments to accurately assess commercial risk and ensure
+  delivery compliance.
+
+    Van Weele (2018), in \textit{Purchasing and Supply Chain Management: Analysis, Strategy, Planning and Practice}
+  (Cengage Learning EMEA), analyzes statutory compliance and risk mitigation in corporate procurement. Van Weele
+  highlights that unvetted supplier onboarding introduces legal vulnerabilities, regulatory tax penalties, and supply
+  interruptions. The author details that modern corporate governance models mandate systematic pre-qualification,
+  verified Know-Your-Customer (KYC) documentation, and immutable audit logs for every transactional approval to
+  satisfy internal and statutory audits.
+
+    From a software engineering perspective, Fowler (2018), in \textit{Patterns of Enterprise Application
+  Architecture} (Addison-Wesley), establishes that complex enterprise transaction workflows must be governed by formal
+  state machine patterns and domain-driven design rather than arbitrary ad-hoc flags. Fowler proves that modeling
+  commercial transactions through explicit, deterministic state machines eliminates race conditions, prevents illegal
+  state leaps, and provides a transparent architectural foundation for append-only audit histories in transactional
+  enterprise systems.
+
+    \vspace{0.4cm}
+    \noindent \textbf{2.2 \hspace{0.2cm} EXISTING SYSTEM}
+
+    \vspace{0.25cm}
+    \textbf{Conventional Manual and Spreadsheet-Based Systems:} The earliest and still widespread implementations of
+  enterprise procurement rely on manual ledger entries, physical requisition slips, and decentralized spreadsheet
+  files. While straightforward to set up, their operational reliability depends entirely on individual clerical
+  discipline. Studies and industry analyses confirm that because spreadsheets lack multi-user concurrency control,
+  automated data validation, and real-time synchronization, organizations frequently experience version conflicts,
+  erroneous manual tax calculations, and lost purchasing records. Departmental staff spend excessive time cross-
+  referencing past invoices, and off-contract purchases regularly bypass managerial approval.
+
+    \vspace{0.25cm}
+    \textbf{Monolithic Legacy ERP Software Suites:} The subsequent generation of procurement software, exemplified by
+  massive enterprise resource planning (ERP) suites such as SAP Ariba and Oracle Procurement Cloud, introduced unified
+  relational databases for global corporate procurement. While these systems offer comprehensive functionality, they
+  are characterized by extreme architectural complexity, slow deployment schedules, rigid user interfaces, and
+  exorbitant licensing fees. For small, medium-sized, and growing institutions, these heavy systems present a
+  prohibitive total cost of ownership (TCO) and intimidate standard operational staff with steep learning curves.
+
+    \vspace{0.25cm}
+    \textbf{Email-Based and Static Document Exchange:} In many digitized mid-tier enterprises, purchase orders are
+  created locally as static PDF documents and dispatched via standard email. While eliminating physical paper, this
+  approach provides no structured operational feedback loop. Buyers possess no mechanism to verify whether a supplier
+  officially acknowledged the order, commenced manufacturing, dispatched the shipment, or attached legitimate tax
+  invoices. Crucial procurement metadata remains trapped within individual mailboxes, rendering continuous vendor
+  performance appraisal impossible.
+
+    \vspace{0.4cm}
+    \noindent \textbf{2.3 \hspace{0.2cm} PROPOSED SYSTEM}
+
+    \vspace{0.25cm}
+    To overcome the fragmentation of spreadsheets, the communication blind spots of email workflows, and the excessive
+  complexity of monolithic ERP suites, this project presents \textbf{VendorFlow}. The proposed system is architected
+  as an agile, full-stack web application developed on the MERN (MongoDB, Express.js, React 19, Node.js) technology
+  stack, delivering an accessible, deterministic, and auditable procurement management portal.
+
+    The core innovation of VendorFlow centers on an enforced Finite State Machine (FSM) that governs the complete
+  lifecycle of purchase orders across eight discrete phases: \textit{Draft $\rightarrow$ Pending Approval
+  $\rightarrow$ Approved $\rightarrow$ Sent $\rightarrow$ Acknowledged $\rightarrow$ Delivered $\rightarrow$ Invoiced
+  $\rightarrow$ Closed}. Each state transition is validated against strict role-based access rules, ensuring that
+  purchase orders cannot leap stages or be modified without proper authorization. The platform integrates an automated
+  computation engine that dynamically calculates itemized subtotals and statutory 18\% Goods and Services Tax (GST)
+  additions in real time.
+
+    Furthermore, VendorFlow incorporates a quantitative supplier evaluation engine that algorithmically computes
+  composite ratings based on four weighted pillars: Delivery Timeliness (30\%), Product Quality (30\%), Commercial
+  Competitiveness (20\%), and Customer Support Responsiveness (20\%). Based on these scores, the system autonomously
+  assigns suppliers to standardized performance tiers (\textit{Preferred, Approved, On-Watch, Blacklisted}), providing
+  procurement buyers with objective data for contract allocations. Security and accountability are guaranteed via
+  Zero-Trust JWT session handling in \texttt{httpOnly} cookies and an immutable audit logging service capturing
+  before-and-after state diffs on every transaction.
+
+    \vspace{0.4cm}
+    \noindent \textbf{2.4 \hspace{0.2cm} SUMMARY}
+
+    \vspace{0.25cm}
+    This chapter reviewed the foundational theoretical literature governing enterprise procurement and supply chain
+  management, highlighting the strategic necessity of automated coordination and objective supplier oversight. A
+  critical analysis of existing systems revealed significant gaps between error-prone manual spreadsheets and overly
+  complex, expensive monolithic ERP platforms. The proposed VendorFlow system was introduced as a modern, modular, and
+  accessible solution that combines state machine transaction governance, automated statutory tax verification, and
+  algorithmic vendor performance tiering to bridge the operational divide in enterprise procurement.
+
+    % ==============================================================================
+    % CHAPTER 3: SYSTEM ANALYSIS
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{CHAPTER 3}} \\[0.2cm]
+        {\large \textbf{SYSTEM ANALYSIS}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{3.1 \hspace{0.2cm} SYSTEM REQUIREMENTS}
+
+    \vspace{0.25cm}
+    System analysis represents a foundational phase in software engineering where operational needs, domain
+  constraints, and technical boundaries are systematically identified and formulated into actionable specifications.
+  To guarantee that VendorFlow operates as an enterprise-grade, highly reliable, and audit-compliant procurement
+  portal, the system requirements are structured across two principal categories: Functional Requirements and Non-
+  Functional Requirements.
+
+    \vspace{0.3cm}
+    \noindent \textbf{3.1.1 \hspace{0.15cm} Functional Requirements}
+
+    \begin{itemize}
+        \item \textbf{Role-Based Authentication and Access Control:} The system must provide secure registration and
+  login workflows for three distinct user roles: Administrator, Procurement Buyer, and Vendor. Authentication must
+  generate cryptographically signed JSON Web Tokens (JWT) stored in tamper-resistant \texttt{httpOnly} session cookies.
+  Endpoints must be strictly gated using role-checking middleware.
+        \item \textbf{Vendor Registration and KYC Verification:} External suppliers must be able to self-register by
+  providing trade details, category classifications, bank account credentials, Permanent Account Number (PAN), and
+  Goods and Services Tax Identification Number (GSTIN). The system must support multipart document uploads for
+  statutory certificates and route new submissions into an administrative review queue for Approval, Rejection, or
+  Revision requests.
+        \item \textbf{Purchase Order Lifecycle State Machine:} The platform must enforce an eight-stage sequential
+  state machine governing purchase orders (\textit{Draft $\rightarrow$ Pending Approval $\rightarrow$ Approved
+  $\rightarrow$ Sent $\rightarrow$ Acknowledged $\rightarrow$ Delivered $\rightarrow$ Invoiced $\rightarrow$ Closed}).
+  Illegal state transitions must be rejected programmatically. Requisitions exceeding configured fiscal thresholds (e.
+  g., INR 50,000) must mandate administrative countersignatures prior to dispatch.
+        \item \textbf{Dynamic Line-Item and Statutory Tax Aggregation:} The PO Builder interface must enable buyers to
+  dynamically add and remove line items, input item codes, quantities, and unit rates. The engine must compute
+  individual line totals, sub-totals, and statutory 18\% Goods and Services Tax (GST) additions in real time without
+  client-side computational latency.
+        \item \textbf{Algorithmic Vendor Performance Evaluation:} The system must calculate a composite performance
+  score (0 to 100) based on four weighted parameters: Delivery Timeliness (30\%), Product Quality (30\%), Commercial
+  Pricing Competitiveness (20\%), and Customer Support Responsiveness (20\%). Vendors must be automatically mapped
+  into performance tiers: \textit{Preferred} ($\ge 85$), \textit{Approved} ($70 - 84$), \textit{On-Watch} ($50 - 69$),
+  or \textit{Blacklisted} ($< 50$).
+        \item \textbf{Append-Only Audit Logging and Notifications:} The platform must capture an immutable audit log
+  for every sensitive transaction, logging the acting user, target entity, timestamp, IP address, user agent, and
+  before-and-after state diffs. An automated in-app polling engine and email notification transporter must alert
+  stakeholders of status changes.
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \noindent \textbf{3.1.2 \hspace{0.15cm} Non-Functional Requirements}
+
+    \begin{itemize}
+        \item \textbf{Performance and Low Latency:} The backend API must deliver sub-second database query execution
+  (under 100 milliseconds) for core transactional operations and aggregation pipelines through compound MongoDB
+  indexes.
+        \item \textbf{Security and Integrity:} All passwords must be irreversibly hashed using adaptive bcrypt salting.
+  REST API routes must be protected against brute-force attacks via rate limiters, Cross-Site Scripting (XSS) via
+  sanitized input headers, and Cross-Origin Resource Sharing (CORS) whitelisting.
+        \item \textbf{Reliability and Fault Tolerance:} The application must implement graceful error-handling
+  middleware on the server and React Error Boundaries on the client, ensuring uninterrupted uptime without unhandled
+  process termination.
+        \item \textbf{Usability and Ergonomics:} The user interface must adhere to modern enterprise design principles,
+  providing clear visual indicators, responsive data tables, accessible status badges, and interactive visualizations.
+    \end{itemize}
+
+    \vspace{0.4cm}
+    \noindent \textbf{3.2 \hspace{0.2cm} SOFTWARE AND HARDWARE REQUIREMENTS}
+
+    \vspace{0.25cm}
+    To ensure optimal development, rapid database execution, and stable deployment of the full-stack MERN architecture,
+  the hardware and software specifications outlined below were utilized.
+
+    \vspace{0.3cm}
+    \noindent \textbf{3.2.1 \hspace{0.15cm} Hardware Requirements}
+
+    \vspace{0.1cm}
+    \noindent The development, execution, and local hosting environment of VendorFlow utilizes standard multi-core
+  processing hardware to efficiently handle simultaneous Node.js event-loop operations and MongoDB I/O streams.
+
+    \vspace{0.3cm}
+    \begin{center}
+    \textbf{Table 3.1: Hardware Requirements} \\[0.2cm]
+    \begin{tabular}{|p{4.5cm}|p{9.5cm}|}
+    \hline
+    \textbf{Component} & \textbf{Specification} \\
+    \hline
+    Processor & Intel Core i5 (10th Generation or higher) / AMD Ryzen 5 equivalent (2.4 GHz minimum) \\
+    \hline
+    System Memory (RAM) & Minimum 8 GB (16 GB recommended for concurrent Vite HMR and MongoDB services) \\
+    \hline
+    Secondary Storage & 256 GB Solid State Drive (SSD) for low-latency database reads and rapid asset compilation \\
+    \hline
+    Network Interface & Standard Broadband/Wi-Fi connection for SMTP email dispatch and package registry access \\
+    \hline
+    Display Resolution & 1366 $\times$ 768 minimum (1920 $\times$ 1080 Full HD recommended for multi-column
+  dashboards) \\
+    \hline
+    \end{tabular}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{3.2.2 \hspace{0.15cm} Software Requirements}
+
+    \vspace{0.1cm}
+    \noindent The technological stack was meticulously selected to guarantee cross-platform compatibility, non-
+  blocking asynchronous throughput, responsive client-side state reactivity, and enterprise-grade data security.
+
+    \vspace{0.3cm}
+    \begin{center}
+    \textbf{Table 3.2: Software Requirements and Frameworks} \\[0.2cm]
+    \begin{tabular}{|p{4.5cm}|p{9.5cm}|}
+    \hline
+    \textbf{Component} & \textbf{Technology / Library Specification} \\
+    \hline
+    Operating System & Microsoft Windows 10/11 (64-bit) / Linux Ubuntu 22.04 LTS / macOS \\
+    \hline
+    Runtime Environment & Node.js (v20.x or v22.x LTS) \\
+    \hline
+    Database Engine & MongoDB Community Server (v7.0+) with Mongoose ODM (v8.9.5) \\
+    \hline
+    Backend Web Framework & Express.js (v4.21.2) REST API \\
+    \hline
+    Frontend Framework & React 19.x with Vite 8.x Bundler \\
+    \hline
+    Client State Management & Redux Toolkit (RTK v2.13.0) and React-Redux \\
+    \hline
+    Styling \& UI Library & Tailwind CSS (v3.4.17) and Lucide React Icons \\
+    \hline
+    Email Service & Nodemailer (v10.1.0) with SMTP/Ethereal transport \\
+    \hline
+    \end{tabular}
+    \end{center}
+
+    % ==============================================================================
+    % CHAPTER 4: SYSTEM DESIGN
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{CHAPTER 4}} \\[0.2cm]
+        {\large \textbf{SYSTEM DESIGN}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{4.1 \hspace{0.2cm} SYSTEM ARCHITECTURE}
+
+    \vspace{0.25cm}
+    System design constitutes the foundational architectural blueprint of the enterprise procurement application,
+  translating the operational and non-functional specifications identified in Chapter 3 into concrete technical
+  structures, modular boundaries, entity models, and runtime interaction sequences. The design adheres strictly to the
+  principles of high cohesion, loose coupling, separation of concerns, and deterministic state management required by
+  enterprise-grade financial and supply chain systems.
+
+    The architectural framework of VendorFlow adopts a robust, multi-tier client-server paradigm centered around the
+  MERN (MongoDB, Express.js, React, Node.js) technology stack. The platform decouples presentation logic, domain
+  routing, business state verification, and data persistence into cleanly delineated layers as illustrated in
+  Figure~\ref{fig:architecture}.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.92\textwidth]{figure_4_1_architecture.png}
+        \caption{Three-Tier Enterprise System Architecture of VendorFlow}
+        \label{fig:architecture}
+    \end{figure}
+
+    The architecture comprises four core functional tiers:
+    \begin{enumerate}
+        \item \textbf{Presentation Layer (Client Tier):} Built with React 18, Vite, and Tailwind CSS. The user
+  interface provides role-specific single-page application (SPA) views for Administrators, Procurement Officers
+  (Buyers), and Supplier Representatives. State synchronization is governed using React Context API and Axios
+  interceptors that attach stateless JSON Web Tokens (JWT) to outbound HTTP headers and intercept unauthenticated
+  401/403 responses.
+        \item \textbf{Application and Business Logic Layer (Server Tier):} Driven by Node.js and the Express.js
+  runtime. This layer encapsulates the RESTful API endpoints, routing traffic through a three-stage pipeline:
+        \begin{itemize}
+            \item \textit{Security Middleware Pipeline:} Intercepts requests for cryptographic JWT signature
+  verification, token expiration checking, and Role-Based Access Control (RBAC) authorization enforcement.
+            \item \textit{Validation and Controller Engine:} Sanitizes request payloads, validates tax identifiers
+  (GSTIN, PAN), and verifies schema compliance before business logic execution.
+            \item \textit{Deterministic State Machine Engine:} Executes finite-state machine (FSM) validation guards,
+  strictly permitting only valid linear state transitions for purchase orders.
+        \end{itemize}
+        \item \textbf{Data Persistence Layer (Database Tier):} Anchored on MongoDB, an enterprise document-oriented
+  NoSQL database. Object Document Mapping (ODM) is executed via Mongoose schemas. Compound indexing is applied on
+  frequently queried attributes (\texttt{vendorId}, \texttt{status}, \texttt{createdAt}), and atomic updates are
+  enforced during state transitions to preserve data integrity.
+        \item \textbf{External Integration and Notification Layer:} Features an asynchronous email dispatcher powered
+  by Nodemailer and SMTP protocols to automatically generate purchase order dispatch notices, approval requests, and
+  supplier onboarding alerts.
+    \end{enumerate}
+
+    \vspace{0.4cm}
+    \noindent \textbf{4.2 \hspace{0.2cm} MODULE DESCRIPTION}
+
+    \vspace{0.25cm}
+    The functional architecture of VendorFlow is partitioned into five tightly coupled, highly cohesive functional
+  modules:
+
+    \vspace{0.25cm}
+    \noindent \textbf{4.2.1 \hspace{0.2cm} Authentication and Role-Based Access Control (RBAC)}
+
+    \vspace{0.15cm}
+    This module governs platform security, credential verification, and granular privilege distribution. Incoming
+  authentication requests hash submitted passwords using the \texttt{bcryptjs} cryptographic library (utilizing an
+  adaptive work factor of 10 salt rounds) and compare the result against persisted hashes. Upon successful
+  verification, the module signs a stateless JWT containing the user identity and assigned role (\texttt{Admin},
+  \texttt{Buyer}, or \texttt{Vendor}). Downstream endpoints are protected by route guards that inspect token claims
+  and immediately terminate unauthorized access attempts with HTTP 403 Forbidden statuses.
+
+    \vspace{0.25cm}
+    \noindent \textbf{4.2.2 \hspace{0.2cm} Vendor Onboarding and KYC Management Module}
+
+    \vspace{0.15cm}
+    The vendor onboarding subsystem facilitates the complete supplier lifecycle, from initial expression of interest
+  to formal accreditation. It provides dedicated interfaces for entering corporate credentials, including company name,
+  registered business address, primary contact details, bank accounts, Permanent Account Number (PAN), and 15-
+  character Goods and Services Tax Identification Number (GSTIN). The module executes algorithmic format checks
+  against statutory tax identifiers and routes onboarding requests through a deterministic approval workflow
+  (\texttt{Pending} $\rightarrow$ \texttt{Active} $\rightarrow$ \texttt{Inactive} $\rightarrow$ \texttt{Blacklisted}).
+
+    \vspace{0.25cm}
+    \noindent \textbf{4.2.3 \hspace{0.2cm} Purchase Order Lifecycle and FSM Workflow Module}
+
+    \vspace{0.15cm}
+    The core transactional engine of the platform is responsible for authoring, approving, dispatching, and
+  reconciling purchase orders. Purchase orders contain multi-item line specifications including item descriptions,
+  unit prices, ordered quantities, and statutory tax rates. The module automates the financial calculation of item
+  sub-totals, statutory 18\% GST, and aggregated gross order totals. All state transitions follow a rigid 8-state
+  deterministic Finite State Machine:
+    \[
+    \text{Draft} \longrightarrow \text{Pending Approval} \longrightarrow \text{Approved} \longrightarrow \text{Sent}
+  \longrightarrow \text{Acknowledged} \longrightarrow \text{Delivered} \longrightarrow \text{Invoiced} \longrightarrow
+  \text{Closed}
+    \]
+    Arbitrary state jumps, retrospective modifications of approved items, and unauthorized lifecycle reversals are
+  strictly prevented by transition validation guards.
+
+    \vspace{0.25cm}
+    \noindent \textbf{4.2.4 \hspace{0.2cm} Supplier Performance Evaluation and Scorecard Engine}
+
+    \vspace{0.15cm}
+    To provide data-driven supplier relationship management, this module implements a multi-criteria performance
+  evaluation scorecard. Suppliers are evaluated periodically across four fundamental operational pillars:
+    \begin{enumerate}
+        \item \textit{Quality Rating ($W_1 = 35\%$):} Conformity of delivered supplies against agreed engineering and
+  manufacturing specifications.
+        \item \textit{Delivery Timeliness ($W_2 = 30\%$):} Adherence to contractually committed delivery dates without
+  dispatch delays.
+        \item \textit{Pricing Competitiveness ($W_3 = 20\%$):} Adherence to contracted quote rates without unapproved
+  cost escalations.
+        \item \textit{Compliance and Responsiveness ($W_4 = 15\%$):} Speed of purchase order acknowledgment and
+  statutory documentation compliance.
+    \end{enumerate}
+    The composite rating is calculated by computing the weighted linear combination:
+    \[
+    Score_{composite} = \sum_{i=1}^{4} (Metric_i \times W_i)
+    \]
+    Suppliers are automatically categorized into performance tiers (\textit{Preferred}, \textit{Approved}, \textit{On-
+  Watch}, or \textit{Blacklisted}), which are visible to procurement officers during order allocation.
+
+    \vspace{0.25cm}
+    \noindent \textbf{4.2.5 \hspace{0.2cm} Audit Logging and Notification Engine}
+
+    \vspace{0.15cm}
+    To satisfy corporate governance and audit requirements, this module provides an immutable chronological ledger of
+  all platform actions. Every state transition, price change, vendor status modification, and approval action
+  generates an audit document recording the acting \texttt{userId}, timestamp, affected entity ID, prior state, new
+  state, and client metadata. Concurrently, the notification engine broadcasts asynchronous email updates to suppliers
+  and buyers regarding critical workflow milestones.
+
+    \vspace{0.4cm}
+    \noindent \textbf{4.3 \hspace{0.2cm} CLASS DIAGRAM}
+
+    \vspace{0.25cm}
+    The static structural composition of the system is modeled through the Unified Modeling Language (UML) class
+  diagram depicted in Figure~\ref{fig:class_diagram}. The diagram illustrates the primary domain entities, their
+  encapsulated data attributes, member methods, and object-oriented relationships.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.95\textwidth]{figure_4_2_class_diagram.png}
+        \caption{UML Class Diagram of VendorFlow Entities and Relationships}
+        \label{fig:class_diagram}
+    \end{figure}
+
+    The entity model is characterized by the following design attributes and relationships:
+    \begin{itemize}
+        \item \textbf{User Class:} Represents all human actors interacting with the portal. Encapsulates profile
+  attributes (\texttt{name}, \texttt{email}, \texttt{passwordHash}, \texttt{role}) and cryptographic routines
+  (\texttt{hashPassword()}, \texttt{verifyPassword()}, \texttt{generateAuthToken()}).
+        \item \textbf{Vendor Class:} Models the supplier organization, maintaining statutory business attributes
+  (\texttt{gstin}, \texttt{pan}, \texttt{status}, \texttt{tierRating}, \texttt{overallScore}). It maintains a one-to-
+  many relationship with \texttt{PurchaseOrder} and \texttt{Evaluation}.
+        \item \textbf{PurchaseOrder Class:} Serves as the central transactional entity. It references a \texttt{Buyer}
+  (User) and a \texttt{Vendor}. It encapsulates financial aggregation methods (\texttt{calculateTotals()}) and
+  lifecycle governance methods (\texttt{transitionState()}, \texttt{logHistory()}).
+        \item \textbf{LineItem Class:} Demonstrates a strict \textit{composition} relationship with
+  \texttt{PurchaseOrder}. A purchase order consists of one or more line items; line items cannot exist independently
+  outside the context of their parent purchase order.
+        \item \textbf{Evaluation Class:} Models supplier performance records, capturing pillar metrics and computing
+  weighted composite scores via \texttt{computeCompositeRating()}.
+        \item \textbf{AuditLog Class:} Maintains an append-only relationship with all platform entities to guarantee
+  end-to-end traceability across the procurement lifecycle.
+    \end{itemize}
+
+    \vspace{0.4cm}
+    \noindent \textbf{4.4 \hspace{0.2cm} SEQUENCE DIAGRAM}
+
+    \vspace{0.25cm}
+    The dynamic behavioral interaction of the system is captured in the UML sequence diagram shown in
+  Figure~\ref{fig:sequence_diagram}. The diagram delineates the chronological message exchange between actors,
+  interface components, security filters, controller services, and the persistence store during the purchase order
+  lifecycle.
+
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.96\textwidth]{figure_4_3_sequence_diagram.png}
+        \caption{UML Sequence Diagram for Purchase Order Creation and Lifecycle Transition}
+        \label{fig:sequence_diagram}
+    \end{figure}
+
+    The chronological execution sequence proceeds as follows:
+    \begin{enumerate}
+        \item \textbf{Authentication and Dispatch:} The Buyer crafts a new purchase order through the React single-
+  page interface and submits the line item payload. The request is dispatched via an HTTP POST request carrying the
+  bearer JWT token in the \texttt{Authorization} header.
+        \item \textbf{Security and RBAC Verification:} The \texttt{authMiddleware} intercepts the incoming request,
+  cryptographically validates the token signature using the secret key, and verifies that the client holds the
+  \texttt{Buyer} or \texttt{Admin} role.
+        \item \textbf{Financial Calculation and Persistence:} The \texttt{poController} iterates through the line
+  items, computing item sub-totals, applying statutory 18\% GST, and deriving the gross total. The controller invokes
+  the MongoDB driver to persist the document in the initial \texttt{Draft} state.
+        \item \textbf{Approval Workflow and State Transition:} Upon submission for approval, the FSM validation guard
+  ensures that the current state is \texttt{Draft}. Upon administrative endorsement, the status transitions to
+  \texttt{Approved}, and an immutable entry is appended to the audit ledger.
+        \item \textbf{Vendor Dispatch and Acknowledgment:} The Buyer triggers the dispatch action, advancing the order
+  state to \texttt{Sent}. The notification engine broadcasts an email notification to the vendor's registered contact.
+        \item \textbf{Supplier Interaction and Order Closure:} The Vendor authenticates, inspects the purchase order,
+  and submits formal acknowledgment, transitioning the state to \texttt{Acknowledged}. Following physical shipment,
+  receipt verification, and invoice matching, the order advances sequentially through \texttt{Delivered} and
+  \texttt{Invoiced} to reach its terminal \texttt{Closed} state.
+    \end{enumerate}
+
+    \vspace{0.4cm}
+    \noindent \textbf{4.5 \hspace{0.2cm} SUMMARY}
+
+    \vspace{0.25cm}
+    Chapter 4 established the complete architectural and structural design of the VendorFlow platform. The multi-tier
+  architecture guarantees separation between presentation, validation, business processing, and persistence layers.
+  The five core modules satisfy all functional requirements identified in Chapter 3, while the UML class and sequence
+  diagrams provide formal static and dynamic specifications for implementation. The next chapter details the
+  implementation specifics, coding standards, and user interface realization.
+
+    % ==============================================================================
+    % CHAPTER 5: SYSTEM IMPLEMENTATION
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{CHAPTER 5}} \\[0.2cm]
+        {\large \textbf{SYSTEM IMPLEMENTATION}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{5.1 \hspace{0.2cm} IMPLEMENTATION ENVIRONMENT}
+
+    \vspace{0.25cm}
+    The implementation of VendorFlow is realized as a full-stack, cloud-native enterprise application built on the
+  MERN stack. The server execution environment runs on Node.js (v20.x LTS) with Express.js managing asynchronous I/O
+  and RESTful route delegation. The presentation layer is bundled using Vite and React 18, applying Tailwind CSS for
+  utility-first responsive rendering. Data persistence is managed using MongoDB Atlas with Mongoose (v8.x) providing
+  schema-level validations, compound indexing, and transactional middleware.
+
+    \vspace{0.4cm}
+    \noindent \textbf{5.2 \hspace{0.2cm} CORE IMPLEMENTATION MODULES}
+
+    \vspace{0.25cm}
+    To ensure maintainability, security, and computational efficiency, the system abstracts core business rules into
+  modular controllers and middleware. The subsections below outline the primary functional implementations that govern
+  platform security, data modeling, transaction state transitions, and supplier scoring.
+
+    \vspace{0.25cm}
+    \noindent \textbf{5.2.1 \hspace{0.2cm} Authentication and Role-Based Access Control (RBAC)}
+
+    \vspace{0.15cm}
+    System security is established via stateless JSON Web Token (JWT) verification combined with role-based guard
+  middleware. Incoming requests carry the token in the \texttt{Authorization: Bearer} header. The authentication
+  filter decodes the cryptographically signed payload, extracts user claims, and checks them against the endpoint's
+  permitted roles (\texttt{Admin}, \texttt{Buyer}, \texttt{Vendor}).
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    // Security Middleware: JWT Authentication & Role Verification
+    const jwt = require('jsonwebtoken');
+
+    const verifyToken = (req, res, next) => {
+      const authHeader = req.headers['authorization'];
+      const token = authHeader && authHeader.split(' ')[1];
+      if (!token) return res.status(401).json({ message: 'Token missing' });
+
+      jwt.verify(token, process.env.JWT_SECRET, (err, decodedUser) => {
+        if (err) return res.status(403).json({ message: 'Invalid or expired token' });
+        req.user = decodedUser; // { id, email, role }
+        next();
+      });
+    };
+
+    const authorizeRoles = (...allowedRoles) => {
+      return (req, res, next) => {
+        if (!req.user || !allowedRoles.includes(req.user.role)) {
+          return res.status(403).json({ message: 'Access denied: Unauthorized role' });
+        }
+        next();
+      };
+    };
+    \end{verbatim}
+    \end{footnotesize}
+
+    \vspace{0.25cm}
+    \noindent \textbf{5.2.2 \hspace{0.2cm} Purchase Order Data Model and Financial Calculation}
+
+    \vspace{0.15cm}
+    The purchase order entity enforces referential integrity through Mongoose schema references, encapsulating
+  embedded line items with real-time tax calculation. Statutory 18\% GST is computed directly from item subtotals,
+  guaranteeing consistent financial records across the lifecycle.
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    // Mongoose Schema: Purchase Order with FSM States & 18% GST Computation
+    const mongoose = require('mongoose');
+
+    const LineItemSchema = new mongoose.Schema({
+      description: { type: String, required: true },
+      quantity:    { type: Number, required: true, min: 1 },
+      unitPrice:   { type: Number, required: true, min: 0 },
+      gstRate:     { type: Number, default: 0.18 }
+    });
+
+    const POSchema = new mongoose.Schema({
+      poNumber:     { type: String, required: true, unique: true },
+      vendorId:     { type: mongoose.Schema.Types.ObjectId, ref: 'Vendor', required: true },
+      buyerId:      { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+      status: {
+        type: String,
+        enum: ['Draft', 'Pending Approval', 'Approved', 'Sent',
+               'Acknowledged', 'Delivered', 'Invoiced', 'Closed'],
+        default: 'Draft'
+      },
+      items:        [LineItemSchema],
+      subtotal:     { type: Number, required: true },
+      taxAmount:    { type: Number, required: true },
+      grandTotal:   { type: Number, required: true },
+      createdAt:    { type: Date, default: Date.now }
+    });
+    \end{verbatim}
+    \end{footnotesize}
+
+    \vspace{0.25cm}
+    \noindent \textbf{5.2.3 \hspace{0.2cm} Deterministic State Machine (FSM) Engine}
+
+    \vspace{0.15cm}
+    To prevent unauthorized out-of-sequence order processing, state transitions are governed by a deterministic Finite
+  State Machine transition lookup table. State transitions that do not match the predefined transition graph are
+  rejected before any database updates occur.
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    // FSM State Transition Lookup Table & Transition Validator
+    const VALID_TRANSITIONS = {
+      'Draft':            ['Pending Approval'],
+      'Pending Approval': ['Approved', 'Draft'],
+      'Approved':         ['Sent'],
+      'Sent':             ['Acknowledged'],
+      'Acknowledged':     ['Delivered'],
+      'Delivered':        ['Invoiced'],
+      'Invoiced':         ['Closed'],
+      'Closed':           []
+    };
+
+    const transitionOrderStatus = async (orderId, targetStatus, userId) => {
+      const order = await PurchaseOrder.findById(orderId);
+      const permitted = VALID_TRANSITIONS[order.status] || [];
+
+      if (!permitted.includes(targetStatus)) {
+        throw new Error(`Illegal state transition: ${order.status} -> ${targetStatus}`);
+      }
+
+      const previousStatus = order.status;
+      order.status = targetStatus;
+      await order.save();
+
+      // Record immutable audit entry
+      await AuditLog.create({
+        entityId: orderId,
+        entityType: 'PurchaseOrder',
+        userId,
+        action: 'STATUS_TRANSITION',
+        fromState: previousStatus,
+        toState: targetStatus,
+        timestamp: new Date()
+      });
+      return order;
+    };
+    \end{verbatim}
+    \end{footnotesize}
+
+    \vspace{0.25cm}
+    \noindent \textbf{5.2.4 \hspace{0.2cm} Supplier Scorecard and Performance Tiering Algorithm}
+
+    \vspace{0.15cm}
+    The supplier evaluation module executes a weighted linear scoring model based on four core operational pillars:
+  Quality ($W_1 = 35\%$), Delivery ($W_2 = 30\%$), Pricing ($W_3 = 20\%$), and Compliance ($W_4 = 15\%$). The
+  algorithm categorizes vendors into distinct operational tiers based on the resulting aggregate score:
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    // Algorithmic Supplier Performance Tier Assignment
+    function evaluateSupplier(metrics) {
+      const weights = { quality: 0.35, delivery: 0.30, pricing: 0.20, compliance: 0.15 };
+
+      const aggregateScore =
+        (metrics.qualityScore    * weights.quality)  +
+        (metrics.deliveryScore   * weights.delivery) +
+        (metrics.pricingScore    * weights.pricing)  +
+        (metrics.complianceScore * weights.compliance);
+
+      let tier = 'Blacklisted';
+      if (aggregateScore >= 85)      tier = 'Preferred';
+      else if (aggregateScore >= 70) tier = 'Approved';
+      else if (aggregateScore >= 50) tier = 'On-Watch';
+
+      return { aggregateScore: Math.round(aggregateScore * 10) / 10, tier };
+    }
+    \end{verbatim}
+    \end{footnotesize}
+
+    \vspace{0.4cm}
+    \noindent \textbf{5.3 \hspace{0.2cm} FRONTEND USER INTERFACE REALIZATION}
+
+    \vspace{0.25cm}
+    The client-side single-page application is designed to give buyers and suppliers real-time feedback without page
+  reloads. The primary interface components include:
+    \begin{enumerate}
+        \item \textbf{Dynamic Purchase Order Builder:} Renders dynamic itemization rows where line quantities and
+  prices recalculate subtotal, 18\% GST, and overall expenditure in real time before submission.
+        \item \textbf{Vendor Lifecycle Dashboard:} Visualizes onboarding status, statutory compliance indicators
+  (GSTIN verification badge), and historical orders with real-time status indicators.
+        \item \textbf{Supplier Scorecard Visualizer:} Presents multi-criteria radar/bar metrics comparing supplier
+  performance against organization-wide benchmarks.
+    \end{enumerate}
+
+    \vspace{0.4cm}
+    \noindent \textbf{5.4 \hspace{0.2cm} SUMMARY}
+
+    \vspace{0.25cm}
+    Chapter 5 presented the essential implementation components of the VendorFlow system. By implementing stateless
+  JWT authentication, deterministic FSM state guards, automated 18\% GST calculations, and algorithmic supplier
+  tiering, the platform realizes the design specifications established in Chapter 4 with high maintainability,
+  precision, and security. The subsequent chapter concludes the project report with an evaluation of contributions and
+  future scope.
+
+    % ==============================================================================
+    % CHAPTER 6: CONCLUSION AND FUTURE ENHANCEMENTS
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{CHAPTER 6}} \\[0.2cm]
+        {\large \textbf{CONCLUSION AND FUTURE ENHANCEMENTS}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{6.1 \hspace{0.2cm} CONCLUSION}
+
+    \vspace{0.25cm}
+    Procurement in many growing organizations still relies heavily on fragmented spreadsheets, unorganized email
+  exchanges, and manual paperwork. This lack of structure regularly leads to misplaced orders, delayed vendor
+  deliveries, untracked price changes, and difficulty in verifying statutory tax compliance. The primary objective of
+  this project was to design and build \textbf{VendorFlow}, a centralized, web-based procurement and supplier
+  lifecycle management platform that addresses these operational bottlenecks directly.
+
+    By developing the application using the MERN stack (MongoDB, Express.js, React, and Node.js), the platform
+  establishes a structured and auditable environment for both procurement officers and external suppliers. The core of
+  the system enforces a strict finite state machine for purchase orders, ensuring that every order progresses
+  logically from initial draft creation to approval, vendor acknowledgment, delivery, invoicing, and final closure.
+  This deterministic progression eliminates unauthorized status jumps and provides an unalterable audit trail for
+  every change made. Furthermore, automating statutory 18\% Goods and Services Tax (GST) calculations inside line
+  items removes manual arithmetic errors, while the objective four-pillar supplier evaluation engine gives procurement
+  teams clear, quantifiable data to assess vendor reliability instead of relying on subjective impressions.
+
+    Overall, the project demonstrates that small-to-medium enterprises can achieve high transparency, process
+  compliance, and operational efficiency without having to invest in bloated, prohibitively expensive enterprise ERP
+  suites.
+
+    \vspace{0.4cm}
+    \noindent \textbf{6.2 \hspace{0.2cm} CONTRIBUTIONS OF THE PROJECT}
+
+    \vspace{0.25cm}
+    The key practical contributions accomplished through this project include:
+    \begin{enumerate}
+        \item \textbf{Controlled Purchase Order Lifecycle:} Implemented an 8-stage finite state machine that
+  guarantees purchase orders can only transition through authorized operational phases, preventing out-of-order
+  execution and unapproved modifications.
+        \item \textbf{Role-Based Security and Isolation:} Configured stateless JSON Web Token (JWT) authentication
+  paired with server-side role validation, granting distinct, protected views and actions for Administrators,
+  Procurement Officers (Buyers), and Vendors.
+        \item \textbf{Automated Financial and Tax Calculations:} Developed an interactive purchase order builder in
+  React that recalculates unit line totals, applies statutory 18\% GST, and updates gross expenditure figures in real
+  time as items are adjusted.
+        \item \textbf{Objective Supplier Evaluation:} Formulated a weighted scoring algorithm evaluating suppliers
+  across Quality (35\%), Delivery Timeliness (30\%), Pricing (20\%), and Compliance (15\%), automatically categorizing
+  them into actionable performance tiers (\textit{Preferred, Approved, On-Watch, Blacklisted}).
+        \item \textbf{Complete Audit Logging:} Engineered an immutable logging mechanism that records who initiated
+  each change, what the prior and updated values were, and the exact timestamp of execution.
+    \end{enumerate}
+
+    \vspace{0.4cm}
+    \noindent \textbf{6.3 \hspace{0.2cm} LIMITATIONS}
+
+    \vspace{0.25cm}
+    While the platform meets its core functional objectives, a few practical limitations remain:
+    \begin{itemize}
+        \item \textbf{Standalone Operation:} The application currently functions independently and is not yet
+  integrated with external enterprise ERP systems (such as SAP or Tally) or external banking payment gateways for
+  automated fund transfers.
+        \item \textbf{Document Digitization:} Physical invoices and delivery challans currently require manual
+  verification rather than being parsed automatically through optical character recognition (OCR).
+        \item \textbf{Email-Only Alerts:} Workflow notifications currently rely on SMTP email delivery, with no real-
+  time push notifications or SMS alerts implemented for mobile users.
+    \end{itemize}
+
+    \vspace{0.4cm}
+    \noindent \textbf{6.4 \hspace{0.2cm} FUTURE ENHANCEMENTS}
+
+    \vspace{0.25cm}
+    To build upon the foundation established in this project, future development will focus on the following
+  enhancements:
+    \begin{enumerate}
+        \item \textbf{Automated OCR Invoice Matching:} Introducing optical character recognition (using Tesseract or
+  cloud-based document AI) to automatically scan supplier-uploaded invoice PDFs and reconcile line items, quantities,
+  and totals directly against the corresponding purchase order (Three-Way Matching).
+        \item \textbf{Real-Time WebSocket Updates:} Replacing intermittent polling with bidirectional WebSocket
+  connections (via Socket.io) to instantly alert buyers and vendors of order status changes, approvals, and messages
+  without requiring manual page refreshes.
+        \item \textbf{Payment Gateway and Accounting API Integration:} Integrating corporate banking APIs or
+  accounting software interfaces to allow automated payments once goods receipt notes (GRN) and invoices are fully
+  validated.
+        \item \textbf{Predictive Spend and Demand Analytics:} Incorporating lightweight time-series forecasting models
+  to analyze historical order trends, helping procurement teams anticipate material reorder points and negotiate
+  better bulk contract terms with preferred suppliers.
+    \end{enumerate}
+
+    % ==============================================================================
+    % APPENDIX: SAMPLE CODE IMPLEMENTATION
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{APPENDIX}} \\[0.2cm]
+        {\large \textbf{SAMPLE CODE IMPLEMENTATION}}
+    \end{center}
+
+    \vspace{0.4cm}
+    \noindent \textbf{A.1 \hspace{0.2cm} SAMPLE CODE IMPLEMENTATION}
+
+    \vspace{0.25cm}
+    The following Node.js, Express, and JavaScript source code snippets demonstrate the foundational backend
+  implementation for the VendorFlow procurement platform. These modules govern the finite state machine transition
+  validator, the weighted supplier scorecard evaluation engine, and the automated email notification pipeline.
+
+    \vspace{0.35cm}
+    \noindent \textbf{A.1.1 \hspace{0.2cm} FSM STATE MACHINE CONTROLLER (PURCHASEORDERCONTROLLER.JS)}
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    const PurchaseOrder = require('../models/PurchaseOrder');
+    const AuditLog = require('../models/AuditLog');
+
+    // Strict transition graph for the 8-stage lifecycle
+    const VALID_TRANSITIONS = {
+      'Draft':            ['Pending Approval'],
+      'Pending Approval': ['Approved', 'Draft'],
+      'Approved':         ['Sent'],
+      'Sent':             ['Acknowledged'],
+      'Acknowledged':     ['Delivered'],
+      'Delivered':        ['Invoiced'],
+      'Invoiced':         ['Closed'],
+      'Closed':           []
+    };
+
+    exports.updatePOStatus = async (req, res) => {
+      try {
+        const { id } = req.params;
+        const { status: targetStatus, comment } = req.body;
+        const userId = req.user.id;
+
+        const po = await PurchaseOrder.findById(id);
+        if (!po) {
+          return res.status(404).json({ message: 'Purchase order not found' });
+        }
+
+        const permittedNextStates = VALID_TRANSITIONS[po.status] || [];
+        if (!permittedNextStates.includes(targetStatus)) {
+          return res.status(400).json({
+            message: `Illegal transition from '${po.status}' to '${targetStatus}'`
+          });
+        }
+
+        const previousStatus = po.status;
+        po.status = targetStatus;
+        po.history.push({
+          status: targetStatus,
+          updatedBy: userId,
+          comment: comment || `Status updated to ${targetStatus}`,
+          timestamp: new Date()
+        });
+
+        await po.save();
+
+        // Persist immutable audit log entry
+        await AuditLog.create({
+          entityId: po._id,
+          entityType: 'PurchaseOrder',
+          action: 'STATUS_TRANSITION',
+          performedBy: userId,
+          details: { from: previousStatus, to: targetStatus, comment }
+        });
+
+        return res.status(200).json({ success: true, order: po });
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+    };
+    \end{verbatim}
+    \end{footnotesize}
+
+    \newpage
+    \noindent \textbf{A.1.2 \hspace{0.2cm} SUPPLIER EVALUATION ENGINE (EVALUATIONCONTROLLER.JS)}
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    const Evaluation = require('../models/Evaluation');
+    const Vendor = require('../models/Vendor');
+
+    // Computes 4-pillar weighted evaluation and sets vendor tier
+    exports.createEvaluation = async (req, res) => {
+      try {
+        const { vendorId, quality, delivery, pricing, compliance, period } = req.body;
+
+        // Weights: Quality=35%, Delivery=30%, Pricing=20%, Compliance=15%
+        const compositeScore = Number(
+          (quality * 0.35 + delivery * 0.30 + pricing * 0.20 + compliance * 0.15).toFixed(2)
+        );
+
+        let tier = 'Blacklisted';
+        if (compositeScore >= 85)      tier = 'Preferred';
+        else if (compositeScore >= 70) tier = 'Approved';
+        else if (compositeScore >= 50) tier = 'On-Watch';
+
+        const record = await Evaluation.create({
+          vendorId,
+          evaluationPeriod: period,
+          qualityScore: quality,
+          deliveryScore: delivery,
+          pricingScore: pricing,
+          complianceScore: compliance,
+          compositeScore,
+          tierAssigned: tier,
+          evaluatedBy: req.user.id
+        });
+
+        // Update vendor aggregate score and tier
+        await Vendor.findByIdAndUpdate(vendorId, {
+          overallScore: compositeScore,
+          tierRating: tier
+        });
+
+        return res.status(201).json({ success: true, evaluation: record });
+      } catch (error) {
+        return res.status(500).json({ message: error.message });
+      }
+    };
+    \end{verbatim}
+    \end{footnotesize}
+
+    \vspace{0.4cm}
+    \noindent \textbf{A.1.3 \hspace{0.2cm} AUTOMATED NOTIFICATION SERVICE (NOTIFICATIONSERVICE.JS)}
+
+    \begin{footnotesize}
+    \begin{verbatim}
+    const nodemailer = require('nodemailer');
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: process.env.SMTP_PORT || 587,
+      secure: false,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
+    });
+
+    exports.sendPODispatchAlert = async (vendorEmail, poNumber, grandTotal) => {
+      const mailOptions = {
+        from: `"VendorFlow Procurement" <${process.env.SMTP_USER}>`,
+        to: vendorEmail,
+        subject: `New Purchase Order Issued: ${poNumber}`,
+        text: `Hello,\n\nPurchase order (${poNumber}) for INR ${grandTotal} ` +
+              `has been issued to your account.\n\nPlease log in to ` +
+              `acknowledge receipt.\n\nRegards,\nVendorFlow Team`
+      };
+
+      try {
+        const info = await transporter.sendMail(mailOptions);
+        console.log(`[SMTP Alert] Dispatched to ${vendorEmail}: ` +
+                    `${info.messageId}`);
+        return true;
+      } catch (err) {
+        console.error(`[SMTP Error] Delivery failed to ${vendorEmail}: ` +
+                      `${err.message}`);
+        return false;
+      }
+    };
+    \end{verbatim}
+    \end{footnotesize}
+
+    % ==============================================================================
+    % REFERENCES
+    % ==============================================================================
+    \newpage
+    \begin{center}
+        {\large \textbf{REFERENCES}}
+    \end{center}
+    \sloppy
+
+    \vspace{0.4cm}
+    \noindent [1] Chopra, S., and Meindl, P. (2016). \textit{Supply Chain Management: Strategy, Planning, and
+  Operation}, 6th ed., Pearson Education, Boston.
+
+    \vspace{0.25cm}
+    \noindent [2] Monczka, R. M., Handfield, R. B., Giunipero, L. C., and Patterson, J. L. (2020). \textit{Purchasing
+  and Supply Chain Management}, 7th ed., Cengage Learning, Boston.
+
+    \vspace{0.25cm}
+    \noindent [3] Fowler, M. (2002). \textit{Patterns of Enterprise Application Architecture}, Addison-Wesley
+  Professional, Boston.
+
+    \vspace{0.25cm}
+    \noindent [4] Van Weele, A. J. (2018). \textit{Purchasing and Supply Chain Management: Analysis, Strategy,
+  Planning and Practice}, 7th ed., Cengage Learning EMEA, Hampshire.
+
+    \vspace{0.25cm}
+    \noindent [5] Goods and Services Tax Network (GSTN), Government of India. (2023). \textit{Standard Operating
+  Procedure for GST Invoicing and Input Tax Credit Verification}, Ministry of Finance, New Delhi.
+
+    \vspace{0.25cm}
+    \noindent [6] Central Board of Indirect Taxes and Customs (CBIC). (2024). \textit{Statutory Compliance Guidelines
+  for Procurement and Invoicing}, Department of Revenue, Government of India.
+
+    \vspace{0.25cm}
+    \noindent [7] Chodorow, K. (2013). \textit{MongoDB: The Definitive Guide: Powerful and Scalable Data Storage}, 2nd
+  ed., O'Reilly Media, Sebastopol.
+
+    \vspace{0.25cm}
+    \noindent [8] Banks, A., and Porcello, E. (2020). \textit{Learning React: Modern Patterns for Developing React
+  Applications}, 2nd ed., O'Reilly Media, Sebastopol.
+
+    \vspace{0.25cm}
+    \noindent [9] Kumar, S., and Sharma, V. (2023). "Automated Supplier Evaluation Frameworks using Multi-Criteria
+  Decision Analysis," \textit{International Journal of Production Economics}, vol. 255, pp. 108--120.
+
+    \vspace{0.25cm}
+    \noindent [10] Bankhead, C., et al. (2022). "Deterministic Workflow Systems in Cloud-Native Enterprise
+  Architectures," \textit{IEEE Transactions on Software Engineering}, vol. 48, no. 6, pp. 2104--2118.
+
+    \end{document} This is my project and    1  │ Chapter page spans missing        │ Standard LaTeX \tableofcontents     │ Replaced with an explicit
+      │                                   │ only displays the start page (e.g.  │ structured table listing full
+      │                                   │ 1), not the full span.              │ multi-page spans (e.g. CHAPTER 1
+      │                                   │                                     │ INTRODUCTION 1--3). and include like this and also i need to add screenshots before the references and also fill the screenshot page number in table of contents as well. The screenshots can be accessed in this folder like the names are Login page, KYC Approval, PO Calculator Supplier Scorecard. Update this and always create a .docs file for every report
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-10-14T18:55:17+05:30.
+</ADDITIONAL_METADATA>
