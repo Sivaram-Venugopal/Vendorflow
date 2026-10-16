@@ -15,7 +15,7 @@ export const getAuthToken = () => {
 export const SERVER_ORIGIN =
   import.meta.env.VITE_SERVER_URL ||
   (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '') : '') ||
-  (import.meta.env.PROD ? '' : 'http://localhost:5000');
+  (import.meta.env.PROD ? 'https://vendorflow-api-igc5.onrender.com' : 'http://localhost:5000');
 
 export const getAssetUrl = (urlPath) => {
   if (!urlPath) return '';
@@ -25,7 +25,8 @@ export const getAssetUrl = (urlPath) => {
 
 const defaultBaseURL =
   import.meta.env.VITE_API_URL ||
-  (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
+  (import.meta.env.PROD ? 'https://vendorflow-api-igc5.onrender.com/api' : 'http://localhost:5000/api');
+
 
 const api = axios.create({
   baseURL: defaultBaseURL,
