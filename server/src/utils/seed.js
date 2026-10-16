@@ -11,10 +11,12 @@ import {
 
 dotenv.config();
 
-const seedDatabase = async () => {
+export const seedDatabase = async (isStandalone = false) => {
   try {
     console.log('🌱 Starting VendorFlow Database Seeder...');
-    await connectDB();
+    if (mongoose.connection.readyState !== 1) {
+      await connectDB();
+    }
 
     // Clear existing collections
     console.log('🧹 Purging existing collections...');
@@ -685,13 +687,31 @@ const seedDatabase = async () => {
     console.log('Buyers : buyer@vendorflow.io, elena.buyer@vendorflow.io, david.buyer@vendorflow.io, priya.buyer@vendorflow.io');
     console.log('Vendors: vendor.apex@example.com, vendor.cyber@example.com, vendor.titan@example.com, vendor.zenith@example.com, vendor.nova@example.com, vendor.freight@example.com');
     console.log('----------------------------------------------------');
+    if (isStandalone) {
+      await mongoose.disconnect();
+      process.exit(0);
+    }
 
-    await mongoose.disconnect();
-    process.exit(0);
+    return {
+      success: true,
+      message: 'Seeded all users, buyers, vendors, purchase orders, and evaluations into MongoDB Atlas successfully!',
+      counts: {
+        users: users.length,
+        vendors: 6,
+        evaluations: evaluations.length,
+      },
+    };
   } catch (err) {
     console.error('❌ Seeding Error:', err.message);
-    process.exit(1);
+    if (isStandalone) {
+      process.exit(1);
+    }
+    throw err;
   }
 };
 
-seedDatabase();
+import { fileURLToPath } from 'url';
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  seedDatabase(true);
+}
+
