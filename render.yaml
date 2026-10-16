@@ -14,13 +14,13 @@ services:
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        sync: false
+        value: mongodb+srv://formula1fancode_db_user:eFimJHtobcDEU4Pd@vendor.4yyu36a.mongodb.net/vendorflow?retryWrites=true&w=majority
       - key: JWT_SECRET
         generateValue: true
       - key: CLIENT_URL
-        sync: false
+        value: "*"
 
-  # Optional Frontend Static Site (if deploying client to Render too)
+  # Frontend Static Site
   - type: static
     name: vendorflow-client
     plan: free
@@ -33,5 +33,6 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        sync: false
+        value: https://vendorflow-api.onrender.com/api
+
 
