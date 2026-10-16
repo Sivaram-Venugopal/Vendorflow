@@ -33,7 +33,10 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_URL
-        value: https://vendorflow-api.onrender.com/api
+        value: https://vendorflow-api-igc5.onrender.com/api
+      - key: VITE_SERVER_URL
+        value: https://vendorflow-api-igc5.onrender.com
+
 
 
 
